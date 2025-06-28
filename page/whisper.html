@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="mdui-theme-auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Two+Tone" rel="stylesheet">
+    <link rel="stylesheet" href="/src/lib/mdui/mdui.css">
+
+    <link rel="stylesheet" href="/src/css/public/global.css">
+
+    <title>Serialist's</title>
+</head>
+
+
+<body>
+    <div id="top"></div>
+    <div id="app">
+        <mdui-layout full-height>
+
+            <mdui-top-app-bar scroll-behavior="elevate" variant="small">
+                <mdui-button-icon icon="menu" id="menu_button"></mdui-button-icon>
+                <mdui-top-app-bar-title><a href="/">Serialist's</a></mdui-top-app-bar-title>
+                <mdui-button href="/page/templete.html">templete</mdui-button>
+            </mdui-top-app-bar>
+
+            <mdui-navigation-drawer close-on-esc close-on-overlay-click placement="left">
+                <mdui-list>
+                    <mdui-list-item href="/" icon="home">Home</mdui-list-item>
+                    <mdui-list-item href="/page/about.html" icon="info">About</mdui-list-item>
+                    <mdui-list-item href="/page/blog/" icon="article">Blog</mdui-list-item>
+                    <mdui-list-item href="/page/whispers.html" icon="speaker_notes">Whispers</mdui-list-item>
+                    <mdui-list-item href="/page/links.html" icon="link">Links</mdui-list-item>
+                </mdui-list>
+            </mdui-navigation-drawer>
+
+            <mdui-layout-item placement="bottom">
+                <div id="footer">
+                    ©2025 By Serialist<br>
+                    <a href="mailto:ba3pt@chd.edu.cn">Email: ba3pt@chd.edu.cn</a><br>
+                    <a href="https://icp.gov.moe/?keyword=20254044">萌ICP备20254044号</a><br>
+                </div>
+            </mdui-layout-item>
+
+            <mdui-layout-main>
+                <div class="content">
+                    <h1>Some noise of me.</h1>
+                    <p>Happy brithday to me! -- form 2025-06-21</p>
+                </div>
+            </mdui-layout-main>
+
+            <mdui-layout-item>
+
+            </mdui-layout-item>
+
+
+        </mdui-layout>
+
+        <mdui-tooltip content="to top">
+            <mdui-fab id="up_to_top_button" href="#top">
+                <mdui-icon slot="icon" name='keyboard_arrow_up'></mdui-icon>
+            </mdui-fab>
+        </mdui-tooltip>
+
+    </div>
+
+    <script src="/src/lib/mdui/mdui.global.js"></script>
+    <script src="/src/js/public/global.js"></script>
+
+</body>
+
+</html>
