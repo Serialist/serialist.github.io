@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serialist</title>
+    <!-- GitHub Markdown 样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+        id="markdown-style">
+    <!-- 基础样式 -->
+    <style>
+        /* ========== 可配置常量（集中修改） ========== */
+        :root {
+            /* 颜色主题 */
+            --light-bg: #ffffff;
+            --light-text: #24292f;
+            --light-border: #e1e4e8;
+            --dark-bg: #0d1117;
+            --dark-text: #e6edf3;
+            --dark-border: #30363d;
+            --link-color: #66ccff;
+
+            /* 布局常量 */
+            --nav-height: 60px;
+            --footer-height: 80px;
+            --content-max-width: 980px;
+            /* 固定内容容器宽度（不随内容变化） */
+            --content-container-width: 760px;
+        }
+
+        /* ========== 全局样式 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            padding-top: var(--nav-height);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            --markdown-bg: #0d1117;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--link-color);
+        }
+
+        /* ========== 导航栏样式 ========== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--light-border);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        body.dark-mode nav {
+            background-color: var(--dark-bg);
+            border-bottom-color: var(--dark-border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: inherit;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .theme-switch {
+            padding: 5px 10px;
+            border: 1px solid var(--light-border);
+            border-radius: 4px;
+            background-color: transparent;
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .theme-switch {
+            border-color: var(--dark-border);
+        }
+
+        .github-link {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ========== 路径导航样式 ========== */
+        .path-nav {
+            max-width: var(--content-max-width);
+            margin: 20px auto;
+            padding: 0 20px;
+            font-size: 0.9rem;
+            color: #6e7681;
+        }
+
+        body.dark-mode .path-nav {
+            color: #8b949e;
+        }
+
+        .path-nav a {
+            color: #0969da;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        body.dark-mode .path-nav a {
+            color: #58a6ff;
+        }
+
+        .path-nav span {
+            margin: 0 5px;
+        }
+
+        /* ========== 内容区域样式 ========== */
+        .content-container {
+            flex: 1;
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        #main-content {
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            padding: 40px;
+            background-color: var(--light-bg);
+            /* 固定宽度，不随内容变化 */
+            width: var(--content-container-width);
+            /* 响应式最小宽度 */
+            min-width: 300px;
+            /* 屏幕不足时自动收缩 */
+            max-width: 100%;
+        }
+
+        body.dark-mode #main-content {
+            background-color: var(--dark-bg);
+            border-color: var(--dark-border);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.1rem;
+            color: #6e7681;
+        }
+
+        body.dark-mode .loading {
+            color: #8b949e;
+        }
+
+        /* 错误提示 */
+        .error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.1rem;
+            color: #cf222e;
+        }
+
+        /* ========== 页脚样式 ========== */
+        footer {
+            height: var(--footer-height);
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--light-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6e7681;
+        }
+
+        body.dark-mode footer {
+            background-color: var(--dark-bg);
+            border-top-color: var(--dark-border);
+            color: #8b949e;
+        }
+
+        .footer-content {
+            max-width: var(--content-max-width);
+            width: 100%;
+        }
+
+        /* ========== 响应式适配 ========== */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 5px 8px;
+                font-size: 0.9rem;
+            }
+
+            #main-content {
+                padding: 20px;
+                --content-container-width: 600px;
+            }
+
+            .path-nav {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-left {
+                gap: 10px;
+            }
+
+            .nav-right {
+                gap: 10px;
+            }
+
+            .theme-switch {
+                padding: 4px 8px;
+                font-size: 0.8rem;
+            }
+
+            .github-link {
+                font-size: 0.8rem;
+            }
+
+            #main-content {
+                --content-container-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 导航栏 -->
+    <nav>
+        <div class="nav-left">
+            <a href="#" class="nav-logo" id="site-logo">Serialist</a>
+            <div class="nav-links">
+                <!-- 全站导航链接 - 单页面模式 -->
+                <a href="#" data-path="about.md">关于</a>
+                <a href="#" data-path="blog.md">博客</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button id="theme-toggle" class="theme-switch">切换深色模式</button>
+            <a href="https://github.com/serialist" target="_blank" class="github-link" rel='noopener'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                Serialist
+            </a>
+        </div>
+    </nav>
+
+    <!-- 路径导航 -->
+    <div class="path-nav" id="path-nav"></div>
+
+    <!-- 核心内容容器（全站唯一内容区） -->
+    <div class="content-container">
+        <div id="main-content" class="markdown-body">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 Serialist · All Rights Reserved · <a href="#" data-path="privacy.md">隐私政策</a></p>
+            <p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+        </div>
+    </footer>
+
+    <!-- 第三方脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+    <script>
+        // ========== 全站配置（集中修改） ==========
+        const SITE_CONFIG = {
+            // 页面文件根目录
+            PAGE_ROOT: '/page/',
+            // 默认页面文件
+            DEFAULT_PAGE: 'index.md',
+            // 404页面路径
+            PAGE_404: '404.md',
+            // 主题样式URL
+            LIGHT_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css',
+            DARK_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css',
+            IN_TITLE: "(｡･∀･)ﾉﾞSerialist的博客",
+            OUT_TITLE: "┭┮﹏┭┮不要走开"
+        };
+
+        // ========== 页面加载完成初始化 ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            initThemeSwitch();    // 初始化主题切换
+            initSiteRouter();     // 初始化全站路由
+            initInternalLinks();  // 初始化内部链接
+            loadPageFromURL();    // 加载初始页面
+        });
+        ;
+        document.title = intitle;
+        document.addEventListener('visibilitychange', () => {
+            document.title = (document.visibilityState === 'hidden') ? SITE_CONFIG.OUT_TITLE : SITE_CONFIG.IN_TITLE;
+
+        });
+
+        // ========== 全站路由核心 ==========
+        function initSiteRouter() {
+            // 监听浏览器前进/后退
+            window.addEventListener('popstate', loadPageFromURL);
+
+            // 全局拦截内部链接点击
+            document.addEventListener('click', (e) => {
+                const targetLink = e.target.closest('[data-path]');
+                if (targetLink) {
+                    e.preventDefault();
+                    const targetPath = targetLink.getAttribute('data-path');
+                    navigateTo(targetPath);
+                }
+            });
+        }
+
+        // 无刷新导航到指定页面
+        function navigateTo(pagePath) {
+            // 更新URL参数（p=路径）
+            const url = new URL(window.location);
+            url.searchParams.set('p', pagePath);
+            window.history.pushState({ path: pagePath }, '', url);
+
+            // 加载目标页面
+            loadPage(pagePath);
+        }
+
+        // 从URL参数加载页面
+        function loadPageFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetPath = urlParams.get('p') || SITE_CONFIG.DEFAULT_PAGE;
+            loadPage(targetPath);
+        }
+
+        // 初始化所有内部链接事件
+        function initInternalLinks() {
+            // Logo点击返回首页
+            document.getElementById('site-logo').addEventListener('click', (e) => {
+                e.preventDefault();
+                navigateTo(SITE_CONFIG.DEFAULT_PAGE);
+            });
+
+            // 路径导航点击事件
+            document.getElementById('path-nav').addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const targetPath = e.target.getAttribute('data-path') || SITE_CONFIG.DEFAULT_PAGE;
+                    navigateTo(targetPath);
+                }
+            });
+        }
+
+        // 加载指定路径的页面文件
+        async function loadPage(pagePath) {
+            // 显示加载状态
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = '<div class="loading">加载中...</div>';
+
+            // 渲染路径导航
+            renderPathNav(pagePath);
+
+            try {
+                // 拼接完整文件路径
+                const fullPath = SITE_CONFIG.PAGE_ROOT + pagePath;
+                const response = await fetch(fullPath);
+
+                // 检查文件是否存在
+                if (!response.ok) {
+                    throw new Error(`页面不存在: ${fullPath}`);
+                }
+
+                // 解析Markdown内容
+                const mdContent = await response.text();
+                const htmlContent = marked.parse(mdContent);
+
+                // 渲染到主内容区
+                mainContent.innerHTML = htmlContent;
+                mainContent.classList.add('markdown-body');
+
+                // 渲染数学公式（仅作用于主内容区）
+                MathJax.typesetPromise([mainContent]).catch(err => {
+                    console.error('MathJax渲染失败:', err);
+                });
+
+            } catch (error) {
+                console.error('页面加载失败:', error);
+                // 加载404页面
+                load404Page();
+            }
+        }
+
+        // 加载404页面
+        async function load404Page() {
+            const mainContent = document.getElementById('main-content');
+            try {
+                const errorPath = SITE_CONFIG.PAGE_ROOT + SITE_CONFIG.PAGE_404;
+                const response = await fetch(errorPath);
+
+                if (response.ok) {
+                    const errorContent = await response.text();
+                    mainContent.innerHTML = marked.parse(errorContent);
+                } else {
+                    mainContent.innerHTML = `<div class="error">页面未找到 (404)</div>`;
+                }
+            } catch (err) {
+                mainContent.innerHTML = `<div class="error">页面未找到 (404)</div>`;
+            }
+        }
+
+        // ========== 主题切换功能 ==========
+        function initThemeSwitch() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const markdownStyle = document.getElementById('markdown-style');
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+            // 设置初始主题
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                markdownStyle.href = SITE_CONFIG.DARK_STYLE;
+                themeToggle.textContent = '切换浅色模式';
+            } else {
+                document.body.classList.remove('dark-mode');
+                markdownStyle.href = SITE_CONFIG.LIGHT_STYLE;
+                themeToggle.textContent = '切换深色模式';
+            }
+
+            // 绑定切换事件
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+
+                markdownStyle.href = isDark ? SITE_CONFIG.DARK_STYLE : SITE_CONFIG.LIGHT_STYLE;
+                themeToggle.textContent = isDark ? '切换浅色模式' : '切换深色模式';
+
+                // 重新渲染MathJax适配主题
+                MathJax.typesetPromise();
+            });
+        }
+
+        // ========== 路径导航渲染 ==========
+        function renderPathNav(pagePath) {
+            const pathNav = document.getElementById('path-nav');
+            const pathParts = pagePath.split('/');
+            let currentPath = '';
+            let navHtml = '';
+
+            // 根目录（page文件夹）
+            navHtml += `<a data-path="">page</a><span>/</span>`;
+
+            // 遍历路径片段
+            pathParts.forEach((part, index) => {
+                if (index === pathParts.length - 1) {
+                    // 最后一段是文件名，仅显示不链接
+                    navHtml += part;
+                } else {
+                    // 文件夹层级，点击跳转到对应index.md
+                    currentPath += part + '/';
+                    const targetPath = currentPath + 'index.md';
+                    navHtml += `<a data-path="${encodeURIComponent(targetPath)}">${part}</a><span>/</span>`;
+                }
+            });
+
+            pathNav.innerHTML = navHtml;
+        }
+    </script>
+</body>
+
+</html>
