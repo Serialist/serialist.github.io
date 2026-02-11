@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="\assets\images\119685953.jpg">
     <title>Serialist</title>
+
     <!-- GitHub Markdown 样式 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
         id="markdown-style">
@@ -370,7 +373,7 @@
             loadPageFromURL();    // 加载初始页面
         });
         ;
-        document.title = intitle;
+        document.title = SITE_CONFIG.IN_TITLE;
         document.addEventListener('visibilitychange', () => {
             document.title = (document.visibilityState === 'hidden') ? SITE_CONFIG.OUT_TITLE : SITE_CONFIG.IN_TITLE;
 
