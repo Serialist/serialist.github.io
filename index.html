@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" href="\assets\images\119685953.jpg">
+    <link rel="icon" href="assets/image/favicon.jpg">
+
     <title>Serialist</title>
 
-    <!-- GitHub Markdown 样式 -->
+    <!-- mdui 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
-        id="markdown-style">
+        id="markdown-style"> <!-- GitHub Markdown 样式 -->
+    <script src="assets/script/avatar.js"></script>
+
     <!-- 基础样式 -->
     <style>
         /* ========== 可配置常量（集中修改） ========== */
@@ -314,6 +320,7 @@
                 <!-- 全站导航链接 - 单页面模式 -->
                 <a href="#" data-path="about.md">关于</a>
                 <a href="#" data-path="blog.md">博客</a>
+                <a href="#" data-path="friend.md">友链</a>
             </div>
         </div>
         <div class="nav-right">
@@ -372,7 +379,7 @@
             initInternalLinks();  // 初始化内部链接
             loadPageFromURL();    // 加载初始页面
         });
-        ;
+
         document.title = SITE_CONFIG.IN_TITLE;
         document.addEventListener('visibilitychange', () => {
             document.title = (document.visibilityState === 'hidden') ? SITE_CONFIG.OUT_TITLE : SITE_CONFIG.IN_TITLE;
@@ -462,6 +469,10 @@
                 MathJax.typesetPromise([mainContent]).catch(err => {
                     console.error('MathJax渲染失败:', err);
                 });
+
+                document.querySelectorAll('avatar-link').forEach(el => {
+                    el.innerHTML = Avatar_Link(el.getAttribute('site-name'), el.getAttribute('stie-url'), el.getAttribute('avatar-url'))
+                })
 
             } catch (error) {
                 console.error('页面加载失败:', error);

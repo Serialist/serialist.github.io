@@ -4,26 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="costom.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
     <title>Seialist</title>
 </head>
 
 <body>
-    <div class="my-face">Σ( °△ ° ||) hello world</div>
+    <div class="notfound">Σ( °△ ° ||) hello world</div>
+
+    <avatar-link site-name="HongLiu的小站" stie-url="https://hongliu.icu" avatar-url="https://hongliu.icu/image/avator_1.jpg">
+    </avatar-link>
+    <avatar-link site-name="Serialist" stie-url="https://www.serialist.top"
+        avatar-url="https://www.serialist.top/assets/image/favicon.ico"> </avatar-link>
+
+
+
+
+    <script src="assets/script/avatar.js"></script>
     <script>
-
-
-        // var len = 10;
-        // function changeTitle() {
-        //     let t = "";
-        //     for (let j = 0; j < len; j++) {
-        //         t += title[(i + j) % title.length];
-        //     }
-        //     i = (i + 1) % (title.length - len);
-
-        //     document.title = t;
-        // }
-        // var int = self.setInterval("changeTitle()", 10);
+        document.querySelectorAll('avatar-link').forEach(el => {
+            el.innerHTML = Avatar_Link(el.getAttribute('site-name'), el.getAttribute('stie-url'), el.getAttribute('avatar-url'))
+        })
 
     </script>
 </body>
