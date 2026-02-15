@@ -70,3 +70,7 @@ if __name__ == "__main__":
     
     # 调用函数生成文件列表
     generate_file_list(blog_folder, output_file="./page/blog.md")
+
+    os.system("pause")
+    
+    input("按回车键退出...")
