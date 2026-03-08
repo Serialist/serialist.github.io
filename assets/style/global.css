@@ -1,0 +1,225 @@
+:root {
+    --light-bg: #ffffff;
+    --light-text: #24292f;
+    --light-border: #e1e4e8;
+    --dark-bg: #0d1117;
+    --dark-text: #e6edf3;
+    --dark-border: #30363d;
+    --link-color: #66ccff;
+    --nav-height: 60px;
+    --footer-height: 80px;
+    --content-max-width: 980px;
+    --content-container-width: 760px;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a {
+    /* 各种颜色 */
+    color: var(--link-color);
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+    padding-top: var(--nav-height);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    --markdown-bg: #0d1117;
+}
+
+/* 转场动画蒙版 */
+#page-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--light-bg);
+    z-index: 2000;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark-mode #page-mask {
+    background: var(--dark-bg);
+}
+
+#page-mask.active {
+    transform: translateX(0);
+}
+
+#page-mask.exit {
+    transform: translateX(-100%);
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background-color: var(--light-bg);
+    border-bottom: 1px solid var(--light-border);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+body.dark-mode nav {
+    background-color: var(--dark-bg);
+    border-bottom-color: var(--dark-border);
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links a,
+.path-nav a {
+    color: inherit;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode .nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 右侧按钮美化 */
+.github-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+}
+
+.github-link:hover {
+    opacity: 0.8;
+}
+
+.theme-switch {
+    cursor: pointer;
+}
+
+.path-nav {
+    max-width: var(--content-max-width);
+    margin: 20px auto;
+    padding: 0 20px;
+    font-size: 0.9rem;
+    color: #6e7681;
+}
+
+.path-nav a {
+    color: #0969da;
+    cursor: pointer;
+}
+
+body.dark-mode .path-nav a {
+    color: #58a6ff;
+}
+
+.content-container {
+    flex: 1;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 20px 40px;
+    display: flex;
+    justify-content: center;
+}
+
+#main-content {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 40px;
+    background-color: var(--light-bg);
+    width: var(--content-container-width);
+    min-width: 300px;
+    max-width: 100%;
+}
+
+body.dark-mode #main-content {
+    background-color: var(--dark-bg);
+    border-color: var(--dark-border);
+}
+
+.loading,
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+footer {
+    height: var(--footer-height);
+    border-top: 1px solid var(--light-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #6e7681;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+/* 文章列表卡片样式 */
+.article-card {
+    border-bottom: 1px solid var(--light-border);
+    padding: 15px 0;
+}
+
+.article-card h3 {
+    margin-bottom: 5px;
+}
+
+.article-card .meta {
+    font-size: 0.8rem;
+    color: #888;
+}
