@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
         id="markdown-style">
     <link rel="stylesheet" href="/assets/style/global.css">
-    <script src="assets/script/avatar.js"></script>
     <link rel="stylesheet" href="/assets/style/timeline.css">
+    <link rel="stylesheet" href="/assets/style/costom.css"></link>
 </head>
 
 <body>
@@ -82,6 +82,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked@14.0.0/marked.min.js"></script>
     <script>
+        // 配置 marked 选项以支持标题 ID
+        marked.setOptions({
+            gfm: true,
+            headerIds: true,
+            mangle: false
+        });
+    </script>
+    <script>
         window.MathJax = {
             tex: {
                 inlineMath: [['$', '$'], ['\\(', '\\)']], // 允许单美元符号 $...$
@@ -95,17 +103,19 @@
         };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
-    <script>
+    <!-- <script>
         const SITE_CONFIG = {
             PAGE_ROOT: '/page/',
             DEFAULT_PAGE: '/',
             IN_TITLE: "(｡･∀･)ﾉﾞSerialist的博客",
             OUT_TITLE: "┭┮﹏┭┮不要走开",
+            ARTICLE_LIST: '/article.json',
             LIGHT_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css',
             DARK_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css'
         };
-    </script>
+    </script> -->
     <script src="/assets/script/global.js"></script>
+    <script src="assets/script/avatar.js"></script>
 </body>
 
 </html>

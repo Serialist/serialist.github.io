@@ -1,7 +1,7 @@
 @echo off
 echo Ö´ÐÐÖÐ
 
-python content.py
+python manager.py
 
 git add .
 

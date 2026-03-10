@@ -1,223 +1,27 @@
-@keyframes text-shake {
+/* 基础变量定义 */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #24292f;
+    --btn-border: #d0d7de;
+    --btn-hover-bg: #f6f8fa;
+}
 
-    2%,
-    24%,
-    80% {
-        -webkit-transform: translateY(0.3em) rotate(1.5deg);
-        -moz-transform: translateY(0.3em) rotate(1.5deg);
-        -ms-transform: translateY(0.3em) rotate(1.5deg);
-        -o-transform: translateY(0.3em) rotate(1.5deg);
-        transform: translateY(0.3em) rotate(1.5deg);
+/* 自动适配系统的深色模式 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #0d1117;
+        --text-color: #e6edf3;
+        --btn-border: #30363d;
+        --btn-hover-bg: #21262d;
     }
+}
 
-    4%,
-    68%,
-    98% {
-        -webkit-transform: translateY(-0.3em) rotate(-.5deg);
-        -moz-transform: translateY(-0.3em) rotate(-.5deg);
-        -ms-transform: translateY(-0.3em) rotate(-.5deg);
-        -o-transform: translateY(-0.3em) rotate(-.5deg);
-        transform: translateY(-0.3em) rotate(-.5deg)
-    }
-
-    38%,
-    6% {
-        -webkit-transform: translateY(0.3em) rotate(-1.5deg);
-        -moz-transform: translateY(0.3em) rotate(-1.5deg);
-        -ms-transform: translateY(0.3em) rotate(-1.5deg);
-        -o-transform: translateY(0.3em) rotate(-1.5deg);
-        transform: translateY(0.3em) rotate(-1.5deg)
-    }
-
-    8%,
-    86% {
-        -webkit-transform: translateY(-0.3em) rotate(-1.5deg);
-        -moz-transform: translateY(-0.3em) rotate(-1.5deg);
-        -ms-transform: translateY(-0.3em) rotate(-1.5deg);
-        -o-transform: translateY(-0.3em) rotate(-1.5deg);
-        transform: translateY(-0.3em) rotate(-1.5deg)
-    }
-
-    10%,
-    72% {
-        -webkit-transform: translateY(0.5em) rotate(1.5deg);
-        -moz-transform: translateY(0.5em) rotate(1.5deg);
-        -ms-transform: translateY(0.5em) rotate(1.5deg);
-        -o-transform: translateY(0.5em) rotate(1.5deg);
-        transform: translateY(0.5em) rotate(1.5deg)
-    }
-
-    12%,
-    64%,
-    78%,
-    96% {
-        -webkit-transform: translateY(-0.1em) rotate(1.5deg);
-        -moz-transform: translateY(-0.1em) rotate(1.5deg);
-        -ms-transform: translateY(-0.1em) rotate(1.5deg);
-        -o-transform: translateY(-0.1em) rotate(1.5deg);
-        transform: translateY(-0.1em) rotate(1.5deg)
-    }
-
-    14%,
-    54% {
-        -webkit-transform: translateY(-0.3em) rotate(1.5deg);
-        -moz-transform: translateY(-0.3em) rotate(1.5deg);
-        -ms-transform: translateY(-0.3em) rotate(1.5deg);
-        -o-transform: translateY(-0.3em) rotate(1.5deg);
-        transform: translateY(-0.3em) rotate(1.5deg)
-    }
-
-    16% {
-        -webkit-transform: translateY(-0.1em) rotate(-1.5deg);
-        -moz-transform: translateY(-0.1em) rotate(-1.5deg);
-        -ms-transform: translateY(-0.1em) rotate(-1.5deg);
-        -o-transform: translateY(-0.1em) rotate(-1.5deg);
-        transform: translateY(-0.1em) rotate(-1.5deg)
-    }
-
-    18%,
-    22% {
-        -webkit-transform: translateY(0.1em) rotate(-1.5deg);
-        -moz-transform: translateY(0.1em) rotate(-1.5deg);
-        -ms-transform: translateY(0.1em) rotate(-1.5deg);
-        -o-transform: translateY(0.1em) rotate(-1.5deg);
-        transform: translateY(0.1em) rotate(-1.5deg)
-    }
-
-    20%,
-    36%,
-    46% {
-        -webkit-transform: translateY(-0.3em) rotate(2.5deg);
-        -moz-transform: translateY(-0.3em) rotate(2.5deg);
-        -ms-transform: translateY(-0.3em) rotate(2.5deg);
-        -o-transform: translateY(-0.3em) rotate(2.5deg);
-        transform: translateY(-0.3em) rotate(2.5deg)
-    }
-
-    26%,
-    50% {
-        -webkit-transform: translateY(0.1em) rotate(.5deg);
-        -moz-transform: translateY(0.1em) rotate(.5deg);
-        -ms-transform: translateY(0.1em) rotate(.5deg);
-        -o-transform: translateY(0.1em) rotate(.5deg);
-        transform: translateY(0.1em) rotate(.5deg)
-    }
-
-    28% {
-        -webkit-transform: translateY(0.1em) rotate(1.5deg);
-        -moz-transform: translateY(0.1em) rotate(1.5deg);
-        -ms-transform: translateY(0.1em) rotate(1.5deg);
-        -o-transform: translateY(0.1em) rotate(1.5deg);
-        transform: translateY(0.1em) rotate(1.5deg)
-    }
-
-    30%,
-    40%,
-    62%,
-    76%,
-    88% {
-        -webkit-transform: translateY(-0.1em) rotate(2.5deg);
-        -moz-transform: translateY(-0.1em) rotate(2.5deg);
-        -ms-transform: translateY(-0.1em) rotate(2.5deg);
-        -o-transform: translateY(-0.1em) rotate(2.5deg);
-        transform: translateY(-0.1em) rotate(2.5deg)
-    }
-
-    32%,
-    34%,
-    66% {
-        -webkit-transform: translateY(0.3em) rotate(-.5deg);
-        -moz-transform: translateY(0.3em) rotate(-.5deg);
-        -ms-transform: translateY(0.3em) rotate(-.5deg);
-        -o-transform: translateY(0.3em) rotate(-.5deg);
-        transform: translateY(0.3em) rotate(-.5deg)
-    }
-
-    42% {
-        -webkit-transform: translateY(0.5em) rotate(-1.5deg);
-        -moz-transform: translateY(0.5em) rotate(-1.5deg);
-        -ms-transform: translateY(0.5em) rotate(-1.5deg);
-        -o-transform: translateY(0.5em) rotate(-1.5deg);
-        transform: translateY(0.5em) rotate(-1.5deg)
-    }
-
-    44%,
-    70% {
-        -webkit-transform: translateY(0.3em) rotate(.5deg);
-        -moz-transform: translateY(0.3em) rotate(.5deg);
-        -ms-transform: translateY(0.3em) rotate(.5deg);
-        -o-transform: translateY(0.3em) rotate(.5deg);
-        transform: translateY(0.3em) rotate(.5deg)
-    }
-
-    48%,
-    74%,
-    82% {
-        -webkit-transform: translateY(-0.1em) rotate(.5deg);
-        -moz-transform: translateY(-0.1em) rotate(.5deg);
-        -ms-transform: translateY(-0.1em) rotate(.5deg);
-        -o-transform: translateY(-0.1em) rotate(.5deg);
-        transform: translateY(-0.1em) rotate(.5deg)
-    }
-
-    52%,
-    56%,
-    60% {
-        -webkit-transform: translateY(0.5em) rotate(2.5deg);
-        -moz-transform: translateY(0.5em) rotate(2.5deg);
-        -ms-transform: translateY(0.5em) rotate(2.5deg);
-        -o-transform: translateY(0.5em) rotate(2.5deg);
-        transform: translateY(0.5em) rotate(2.5deg)
-    }
-
-    58% {
-        -webkit-transform: translateY(0.1em) rotate(2.5deg);
-        -moz-transform: translateY(0.1em) rotate(2.5deg);
-        -ms-transform: translateY(0.1em) rotate(2.5deg);
-        -o-transform: translateY(0.1em) rotate(2.5deg);
-        transform: translateY(0.1em) rotate(2.5deg)
-    }
-
-    84% {
-        -webkit-transform: translateY(0.3em) rotate(2.5deg);
-        -moz-transform: translateY(0.3em) rotate(2.5deg);
-        -ms-transform: translateY(0.3em) rotate(2.5deg);
-        -o-transform: translateY(0.3em) rotate(2.5deg);
-        transform: translateY(0.3em) rotate(2.5deg)
-    }
-
-    90% {
-        -webkit-transform: translateY(0.5em) rotate(-.5deg);
-        -moz-transform: translateY(0.5em) rotate(-.5deg);
-        -ms-transform: translateY(0.5em) rotate(-.5deg);
-        -o-transform: translateY(0.5em) rotate(-.5deg);
-        transform: translateY(0.5em) rotate(-.5deg)
-    }
-
-    92% {
-        -webkit-transform: translateY(0.1em) rotate(-.5deg);
-        -moz-transform: translateY(0.1em) rotate(-.5deg);
-        -ms-transform: translateY(0.1em) rotate(-.5deg);
-        -o-transform: translateY(0.1em) rotate(-.5deg);
-        transform: translateY(0.1em) rotate(-.5deg)
-    }
-
-    94% {
-        -webkit-transform: translateY(0.5em) rotate(.5deg);
-        -moz-transform: translateY(0.5em) rotate(.5deg);
-        -ms-transform: translateY(0.5em) rotate(.5deg);
-        -o-transform: translateY(0.5em) rotate(.5deg);
-        transform: translateY(0.5em) rotate(.5deg)
-    }
-
-    0%,
-    to {
-        -webkit-transform: translate(0) rotate(0);
-        -moz-transform: translate(0) rotate(0);
-        -ms-transform: translate(0) rotate(0);
-        -o-transform: translate(0) rotate(0);
-        transform: translate(0) rotate(0)
-    }
+/* 强制深色模式类（对应 JS 逻辑） */
+body.dark-mode {
+    --bg-color: #0d1117;
+    --text-color: #e6edf3;
+    --btn-border: #30363d;
+    --btn-hover-bg: #21262d;
 }
 
 * {
@@ -229,20 +33,192 @@
 body {
     min-height: 100vh;
     display: flex;
-    /* 开启flex布局 */
     justify-content: center;
-    /* 水平居中 */
     align-items: center;
-    /* 垂直居中 */
-    background-color: #f8f9fa;
-    /* 可选：加个浅背景更美观 */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
 }
 
 .notfound {
     font-style: italic;
-    font-size: 2rem;
-    /* 可选：放大字体更醒目 */
-    color: #333;
-    /* 可选：调整文字颜色 */
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    /* 响应式字体大小 */
+    margin-bottom: 3rem;
+    /* 增加与下方链接的间距 */
     animation: text-shake 10s ease-in-out infinite;
+    line-height: 1.4;
+}
+
+/* 按钮组布局 */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* 空间不足时自动换行 */
+}
+
+/* 按钮样式优化 */
+.btn-link {
+    text-decoration: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    color: var(--text-color);
+    border: 1px solid var(--btn-border);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-link:hover {
+    background-color: var(--btn-hover-bg);
+    transform: translateY(-2px);
+}
+
+/* 手机端适配：按钮垂直排列 */
+@media (max-width: 480px) {
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-link {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* --- 你原有的动画代码保持不变 --- */
+@keyframes text-shake {
+
+    2%,
+    24%,
+    80% {
+        transform: translateY(0.3em) rotate(1.5deg);
+    }
+
+    4%,
+    68%,
+    98% {
+        transform: translateY(-0.3em) rotate(-.5deg);
+    }
+
+    38%,
+    6% {
+        transform: translateY(0.3em) rotate(-1.5deg);
+    }
+
+    8%,
+    86% {
+        transform: translateY(-0.3em) rotate(-1.5deg);
+    }
+
+    10%,
+    72% {
+        transform: translateY(0.5em) rotate(1.5deg);
+    }
+
+    12%,
+    64%,
+    78%,
+    96% {
+        transform: translateY(-0.1em) rotate(1.5deg);
+    }
+
+    14%,
+    54% {
+        transform: translateY(-0.3em) rotate(1.5deg);
+    }
+
+    16% {
+        transform: translateY(-0.1em) rotate(-1.5deg);
+    }
+
+    18%,
+    22% {
+        transform: translateY(0.1em) rotate(-1.5deg);
+    }
+
+    20%,
+    36%,
+    46% {
+        transform: translateY(-0.3em) rotate(2.5deg);
+    }
+
+    26%,
+    50% {
+        transform: translateY(0.1em) rotate(.5deg);
+    }
+
+    28% {
+        transform: translateY(0.1em) rotate(1.5deg);
+    }
+
+    30%,
+    40%,
+    62%,
+    76%,
+    88% {
+        transform: translateY(-0.1em) rotate(2.5deg);
+    }
+
+    32%,
+    34%,
+    66% {
+        transform: translateY(0.3em) rotate(-.5deg);
+    }
+
+    42% {
+        transform: translateY(0.5em) rotate(-1.5deg);
+    }
+
+    44%,
+    70% {
+        transform: translateY(0.3em) rotate(.5deg);
+    }
+
+    48%,
+    74%,
+    82% {
+        transform: translateY(-0.1em) rotate(.5deg);
+    }
+
+    52%,
+    56%,
+    60% {
+        transform: translateY(0.5em) rotate(2.5deg);
+    }
+
+    58% {
+        transform: translateY(0.1em) rotate(2.5deg);
+    }
+
+    84% {
+        transform: translateY(0.3em) rotate(2.5deg);
+    }
+
+    90% {
+        transform: translateY(0.5em) rotate(-.5deg);
+    }
+
+    92% {
+        transform: translateY(0.1em) rotate(-.5deg);
+    }
+
+    94% {
+        transform: translateY(0.5em) rotate(.5deg);
+    }
+
+    0%,
+    to {
+        transform: translate(0) rotate(0);
+    }
 }

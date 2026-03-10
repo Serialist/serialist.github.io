@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/style/costom.css">
     <title>404 Not Found</title>
 </head>
-
 <body>
-    <h1 class="notfound">Σ( °△ ° ||) 居然什么都没找到！</h1>
+    <div class="container">
+        <h1 class="notfound">Σ( °△ ° ||) 居然什么都没找到！</h1>
+
+        <div class="button-group">
+            <a href="/" class="btn-link">返回首页</a>
+            <a href="javascript:history.back()" class="btn-link">返回上一页</a>
+        </div>
+    </div>
+
     <script>
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.style.backgroundColor = "#0d1117";
-            document.body.style.color = "#e6edf3";
-            document.body.style.borderColor = "#30363d";
-        }
-        else {
-            document.body.style.backgroundColor = "#ffffff";
-            document.body.style.color = "#24292f";
-            document.body.style.borderColor = "#e1e4e8";
+        // 优先读取本地存储设置，如果没有则跟随系统
+        const theme = localStorage.getItem('darkMode');
+        if (theme === 'true') {
+            document.body.classList.add('dark-mode');
+        } else if (theme === 'false') {
+            document.body.classList.remove('dark-mode');
         }
     </script>
 </body>
-
 </html>

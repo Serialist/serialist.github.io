@@ -1,3 +1,13 @@
+const SITE_CONFIG = {
+            PAGE_ROOT: '/page/',
+            DEFAULT_PAGE: '/',
+            IN_TITLE: "(｡･∀･)ﾉﾞSerialist的博客",
+            OUT_TITLE: "┭┮﹏┭┮不要走开",
+            ARTICLE_LIST: '/article.json',
+            LIGHT_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css',
+            DARK_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css'
+        };
+
 const mask = document.getElementById('page-mask');
 
 async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
@@ -29,7 +39,7 @@ function getPhysicalPath(displayPath) {
 // 核心加载函数
 async function loadPage(rawPath) {
     const displayPath = resolvePath(rawPath);
-    
+
     // 同步浏览器 URL 参数
     const url = new URL(window.location);
     if (url.searchParams.get('p') !== displayPath) {
@@ -51,7 +61,10 @@ async function loadPage(rawPath) {
         if (!response.ok) throw new Error('404');
 
         let mdContent = await response.text();
-        mainContent.innerHTML = marked.parse(mdContent);
+        // 仅在渲染时过滤掉顶部的 YAML，保留 mdContent 原始变量供其他用途（如需要解析元数据）
+        const contentToRender = mdContent.replace(/^---\s*[\s\S]*?\n---\s*/, '');
+        mainContent.innerHTML = marked.parse(contentToRender);
+
         postProcess(mainContent, displayPath);
 
     } catch (e) {
@@ -84,7 +97,7 @@ function postProcess(container, currentPath) {
 // 博客列表
 async function renderBlogList(container) {
     try {
-        const res = await fetch('/articles.json');
+        const res = await fetch(SITE_CONFIG.ARTICLE_LIST);
         const articles = await res.json();
 
         articles.sort((a, b) => new Date(b.created) - new Date(a.created));
@@ -129,13 +142,13 @@ function renderPathNav(displayPath) {
     const parts = displayPath.split('/').filter(p => p);
     let html = `<a data-path="">首页</a><span>/</span>`;
     let current = "";
-    
+
     parts.forEach((part, i) => {
         const isLast = i === parts.length - 1;
         // 如果原始路径是以 / 结尾，或者这不是最后一项，则视为目录
         const isDir = displayPath.endsWith('/') || !isLast;
         current += part + (isDir ? "/" : "");
-        
+
         if (isLast && !displayPath.endsWith('/')) {
             html += `<span>${decodeURIComponent(part)}</span>`;
         } else {
@@ -171,13 +184,13 @@ function initTheme() {
 
     const set = (isDark) => {
         document.body.classList.toggle('dark-mode', isDark);
-        if(style) style.href = isDark ? SITE_CONFIG.DARK_STYLE : SITE_CONFIG.LIGHT_STYLE;
-        if(icon) icon.setAttribute('name', isDark ? 'dark_mode' : 'light_mode');
+        if (style) style.href = isDark ? SITE_CONFIG.DARK_STYLE : SITE_CONFIG.LIGHT_STYLE;
+        if (icon) icon.setAttribute('name', isDark ? 'dark_mode' : 'light_mode');
         localStorage.setItem('darkMode', isDark);
         syncThemeIcon();
     };
 
-    if(btn) btn.onclick = () => set(!document.body.classList.contains('dark-mode'));
+    if (btn) btn.onclick = () => set(!document.body.classList.contains('dark-mode'));
 
     const isDarkSaved = localStorage.getItem('darkMode') === 'true';
     set(isDarkSaved);

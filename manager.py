@@ -10,10 +10,11 @@ from datetime import datetime, date
 
 # ========== 核心配置 ==========
 CONFIG = {
-    "INPUT_DIR": "./blog",
-    "OUTPUT_DIR": "./page/blog",
-    "ASSETS_DIR": "./assets/content",
-    "JSON_OUT": "./articles.json",
+    "INPUT_DIR": "E:\serialist\workspace\website\serialist-top\blog",
+    "OUTPUT_DIR": "E:\serialist\workspace\website\serialist-top\page/blog",
+    "ASSETS_DIR": "E:\serialist\workspace\website\serialist-top\assets\blog",
+    "JSON_OUT": "E:\serialist\workspace\website\serialist-top\article.json",
+    "LOG_FILE": "E:\serialist\workspace\website\serialist-top\manager.log"
 }
 
 
@@ -94,6 +95,15 @@ def manage():
     parser.add_argument("-o", "--output", default=CONFIG["OUTPUT_DIR"])
     args = parser.parse_args()
 
+    with open(CONFIG["LOG_FILE"], "a+", encoding="utf-8") as f:
+        f.write(f"[{datetime.now()}] {args}\n")
+        f.write(f"[+] 输入目录: {args.input}\n")
+        f.write(f"[+] 输出目录: {args.output}\n")
+        f.write(f"[+] 输出图片目录: {args.assets}\n")
+        f.write(f"[+] 索引文件: {args.list}\n")
+    
+    print(args.input)
+
     CONFIG["INPUT_DIR"] = args.input
     CONFIG["OUTPUT_DIR"] = args.output
     CONFIG["JSON_OUT"] = args.list
@@ -113,19 +123,27 @@ def manage():
 
     # 扫描文件
     files = []
-    if args.recursive:
-        for r, _, fs in os.walk(CONFIG["INPUT_DIR"]):
-            for f in fs:
-                if f.endswith(".md"):
-                    files.append(os.path.join(r, f))
+    input_path = CONFIG["INPUT_DIR"]
+    
+    if os.path.isfile(input_path):
+        # 如果传入的是单个文件
+        if input_path.endswith(".md"):
+            files.append(input_path)
+    elif os.path.isdir(input_path):
+        # 如果传入的是目录
+        if args.recursive:
+            for r, _, fs in os.walk(input_path):
+                for f in fs:
+                    if f.endswith(".md"):
+                        files.append(os.path.join(r, f))
+        else:
+            files = [
+                os.path.join(input_path, f)
+                for f in os.listdir(input_path)
+                if f.endswith(".md")
+            ]
     else:
-        if not os.path.exists(CONFIG["INPUT_DIR"]):
-            os.makedirs(CONFIG["INPUT_DIR"])
-        files = [
-            os.path.join(CONFIG["INPUT_DIR"], f)
-            for f in os.listdir(CONFIG["INPUT_DIR"])
-            if f.endswith(".md")
-        ]
+        print(f"[!] 路径不存在: {input_path}")
 
     new_articles = []
     os.makedirs(CONFIG["OUTPUT_DIR"], exist_ok=True)
@@ -187,7 +205,13 @@ def manage():
             "w",
             encoding="utf-8",
         ) as f:
-            f.write(processed_content.strip())
+        # 如果原始有 YAML，则重新拼合，否则直接写入
+            yaml_match = re.search(r"^---\s*\n(.*?)\n---\s*\n", raw_content, re.DOTALL)
+            if yaml_match:
+                full_output = f"---\n{yaml_match.group(1)}\n---\n\n{processed_content.strip()}"
+            else:
+                full_output = processed_content.strip()
+            f.write(full_output)
 
         new_articles.append(item)
 
