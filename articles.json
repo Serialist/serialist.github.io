@@ -9,5 +9,14 @@
         "tag": "helloworld blog",
         "heh": 1,
         "email": "ba3pt@qq.com"
+    },
+    {
+        "id": "1ed160d9",
+        "path": "E:\\serialist\\workspace\\markdown\\robomaster\\RM电控资源.md",
+        "created": "2026-01-21",
+        "modified": "2026-04-03",
+        "title": "RM 电控资源",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com"
     }
 ]
