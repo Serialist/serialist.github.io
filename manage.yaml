@@ -1,0 +1,9 @@
+input_path: "./blog"
+output_path: "./page/blog"
+list_path: "./articles.json"
+assets_path: "./assets/image"
+
+author: "Serialist"
+email: "ba3pt@qq.com"
+
+title: "Hello World"
