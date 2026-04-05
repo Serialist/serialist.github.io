@@ -35,10 +35,10 @@
 
     <nav>
         <div class="nav-left">
-            <button class="menu-toggle mobile-only" id="menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单"> 
+                <span> </span>
+                <span> </span>
+                <span> </span>
             </button>
             <a href="#" class="nav-logo" id="site-logo" data-path="index">Serialist</a>
             <div class="nav-links desktop-only">
@@ -72,6 +72,10 @@
     <div class="content-container">
         <div id="main-content" class="markdown-body"></div>
     </div>
+
+    <img src="/assets/image/sirinkawaii.gif"
+        style="position:fixed;left:16px;bottom:16px;z-index:9999;max-width:120px;height:auto;pointer-events:none;display:none;"
+        onload="const check=()=>{this.style.display=window.innerWidth>=768?'block':'none'};check();window.addEventListener('resize',check)">
 
     <footer>
         <div class="footer-content">

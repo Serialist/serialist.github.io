@@ -3,7 +3,7 @@ echo Ö´ÐÐÖÐ
 
 git add .
 
-git commit -m "chore: article update %DATE%T%TIME%"
+git commit -m "chore: article update %DATE%"
 
 git push -u origin main
 
