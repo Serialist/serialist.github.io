@@ -1,10 +1,5 @@
 ---
-created: 2026-03-12
-modified: 2077-09-09
-title: hello world
-author: Serialist
-tag: helloworld blog
-heh: 1
+created: 2024-10-05
 ---
 
 # hello world
