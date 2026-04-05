@@ -1,7 +1,7 @@
-input_path: "./blog"
-output_path: "./page/blog"
-list_path: "./articles.json"
-assets_path: "./assets/image"
+input_path: "E:/serialist/workspace/website/serialist-top/blog"
+output_path: "E:/serialist/workspace/website/serialist-top/page/blog"
+list_path: "E:/serialist/workspace/website/serialist-top/articles.json"
+assets_path: "E:/serialist/workspace/website/serialist-top/assets/image"
 
 author: "Serialist"
 email: "ba3pt@qq.com"
