@@ -1,8 +1,6 @@
 @echo off
 echo Ö´ÐÐÖÐ
 
-python content.py
-
 git add .
 
 git commit -m "chore: article update %DATE%T%TIME%"
