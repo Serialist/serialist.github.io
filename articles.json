@@ -72,5 +72,23 @@
         "email": "ba3pt@qq.com",
         "created": "2025-07-21",
         "modified": "2026-04-06"
+    },
+    {
+        "id": "1c36e554",
+        "path": "E:\\serialist\\workspace\\markdown\\设计结构\\更新日志指南.md",
+        "created": "2025-10-18",
+        "title": "更新日志（Change Log）指南",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com",
+        "modified": "2026-04-06"
+    },
+    {
+        "id": "b681fd0b",
+        "path": "E:\\serialist\\workspace\\markdown\\设计结构\\版本号.md",
+        "created": "2025-08-16",
+        "title": "版本号",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com",
+        "modified": "2026-04-06"
     }
 ]
