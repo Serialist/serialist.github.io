@@ -38,20 +38,30 @@ const MathProtector = {
 		this.blockMath = [];
 		this.inlineMath = [];
 
-		// 保护行间公式 block
-		md = md.replace(/\$\$(.+?)\$\$/gs, (match, formula) => {
-			const index = this.blockMath.length;
-			this.blockMath.push(`$$ \n\\displaylines{${formula}} \n$$`);
-			return `\n\n<div id="BLOCK_MATH_${index}"></div>\n\n`;
-		});
+		return md.replace(/(```[\s\S]*?```|`[^`\n]+`)|(\$\$[\s\S]+?\$\$)|(\$[^$\n]+\$)/g, (match, code, block, inline) => {
+			// 如果代码块，不动，防止代码块被误处理
+			if (code) return code;
 
-		// 保护行内公式 inline
-		md = md.replace(/\$((?!\s).+?)\$/g, (match, formula) => {
-			const index = this.inlineMath.length;
-			this.inlineMath.push(`$${formula}$`);
-			return `INLINE_MATH_${index}`;
+			// 如果行间公式
+			if (block) {
+				const formula = block.slice(2, -2);
+				const index = this.blockMath.length;
+				this.blockMath.push(`$$ \n\\displaylines{${formula}} \n$$`);
+				return `\n\n<div id="BLOCK_MATH_${index}"></div>\n\n`;
+			}
+
+			// 如果行内公式
+			if (inline) {
+				const formula = inline.slice(1, -1);
+				// 如果只有一个$就跳过
+				if (formula.trim().length === 0) return inline;
+				const index = this.inlineMath.length;
+				this.inlineMath.push(`$${formula}$`);
+				return `INLINE_MATH_${index}`;
+			}
+
+			return match;
 		});
-		return md;
 	},
 
 	restore(html) {
@@ -62,11 +72,11 @@ const MathProtector = {
 		return html;
 	},
 
-	restoreBlocks() {
-		// 还原行间
+	restoreBlocks(container) {
+		// 还原块级
 		this.blockMath.forEach((math, i) => {
-			const container = document.getElementById(`BLOCK_MATH_${i}`);
-			if (container) container.outerHTML = math;
+			const el = container.querySelector(`#BLOCK_MATH_${i}`);
+			if (el) el.outerHTML = math;
 		});
 	}
 };
@@ -89,6 +99,11 @@ async function loadPage(rawPath) {
 	mask.classList.add('active');
 	await sleep(300);
 
+	const renderer = new marked.Renderer();
+	renderer.code = ({ text, lang }) => {
+		return `<pre class="tex2jax_ignore"><code class="language-${lang}">${text}</code></pre>`;
+	};
+
 	renderPathNav(displayPath);
 	const targetFile = getPhysicalPath(displayPath);
 
@@ -98,7 +113,6 @@ async function loadPage(rawPath) {
 
 		let mdContent = await response.text();
 
-		// 预处理公式
 		mdContent = MathProtector.protect(mdContent);
 
 		// 解析 Markdown

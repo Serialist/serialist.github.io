@@ -86,31 +86,6 @@
 		</div>
 	</footer>
 
-	<script src="https://cdn.jsdelivr.net/npm/marked@14.0.0/marked.min.js"></script>
-	<script>
-		window.MathJax = {
-			tex: {
-				inlineMath: [['$', '$'], ['\\(', '\\)']],
-				displayMath: [['$$', '$$'], ['\\[', '\\]']],
-				processEscapes: true,
-				packages: { '[+]': ['boldsymbol', 'ams'] } // 支持 align 环境、\\ 换行等
-			},
-			options: {
-				skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-				ignoreHtmlClass: 'tex2jax_ignore'
-			}
-		};
-	</script>
-	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
-	<!-- mermaid 流程图 -->
-	<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-	<script>
-		mermaid.initialize({
-			startOnLoad: false, // 动态页面必须为 false
-			theme: 'default',
-			securityLevel: 'loose'
-		});
-	</script>
 	<script>
 		const SITE_CONFIG = {
 			PAGE_ROOT: '/page/',
@@ -120,7 +95,25 @@
 			LIGHT_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css',
 			DARK_STYLE: 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css'
 		};
+		window.MathJax = {
+			tex: {
+				inlineMath: [['$', '$'], ['\\(', '\\)']],
+				displayMath: [['$$', '$$'], ['\\[', '\\]']],
+				processEscapes: true
+			},
+			options: {
+				skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'annotation', 'annotation-xml'],
+			}
+		};
+		mermaid.initialize({
+			startOnLoad: false, // 动态页面必须为 false
+			theme: 'default',
+			securityLevel: 'loose'
+		});
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/marked@14.0.0/marked.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 	<script src="/assets/script/global.js"></script>
 </body>
 
