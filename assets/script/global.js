@@ -1,23 +1,24 @@
+/**
+ * 核心配置与状态管理
+ */
 const mask = document.getElementById('page-mask');
+const mainContent = document.getElementById('main-content');
 
-async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 /**
- * 核心路径转换逻辑
- * 1. 去掉所有 .md 后缀
- * 2. 如果是 / 结尾或为空，代表 index
- * 3. 始终确保返回相对于根目录的干净路径
+ * 路径转换逻辑：规范化 URL 路径
  */
 function resolvePath(rawPath) {
     if (!rawPath) return SITE_CONFIG.DEFAULT_PAGE;
-    let path = rawPath.replace(/\.md$/, ''); // 移除 .md
-    if (path.endsWith('/index')) path = path.slice(0, -5); // folder/index -> folder/
-    if (path.startsWith('/')) path = path.substring(1); // 统一去掉开头的斜杠
+    let path = rawPath.replace(/\.md$/, ''); 
+    if (path.endsWith('/index')) path = path.slice(0, -6); // 修复原逻辑 index 长度计算
+    if (path.startsWith('/')) path = path.substring(1);
     return path;
 }
 
 /**
- * 获取实际 fetch 的物理文件路径
+ * 获取物理文件路径
  */
 function getPhysicalPath(displayPath) {
     if (!displayPath || displayPath.endsWith('/')) {
@@ -26,24 +27,76 @@ function getPhysicalPath(displayPath) {
     return displayPath + '.md';
 }
 
-// 核心加载函数
+/**
+ * 公式保护与还原工具
+ */
+const MathProtector = {
+    blockMath: [],
+    inlineMath: [],
+    
+    protect(md) {
+        this.blockMath = [];
+        this.inlineMath = [];
+        
+        // 1. 保护 $$ 块级公式
+        md = md.replace(/\$\$(.+?)\$\$/gs, (match, formula) => {
+            const index = this.blockMath.length;
+            this.blockMath.push(`$$ \n\\displaylines{${formula}} \n$$`);
+            return `\n\n<div id="BLOCK_MATH_${index}"></div>\n\n`;
+        });
+
+        // 2. 保护 $ 行内公式
+        md = md.replace(/\$((?!\s).+?)\$/g, (match, formula) => {
+            const index = this.inlineMath.length;
+            this.inlineMath.push(`$${formula}$`);
+            return `INLINE_MATH_${index}`;
+        });
+        return md;
+    },
+
+    restore(html) {
+        // 还原行内文本占位
+        this.inlineMath.forEach((math, i) => {
+            html = html.replace(`INLINE_MATH_${i}`, math);
+        });
+        return html;
+    },
+
+    restoreBlocks() {
+        // 还原块级 DOM
+        this.blockMath.forEach((math, i) => {
+            const container = document.getElementById(`BLOCK_MATH_${i}`);
+            if (container) container.outerHTML = math;
+        });
+    }
+};
+
+/**
+ * 页面加载核心函数
+ */
 async function loadPage(rawPath) {
     const displayPath = resolvePath(rawPath);
     
-    // 同步浏览器 URL 参数
+    // 1. URL 状态同步
     const url = new URL(window.location);
     if (url.searchParams.get('p') !== displayPath) {
         url.searchParams.set('p', displayPath);
         window.history.pushState({ path: displayPath }, '', url);
     }
 
+    // 2. 切换动画：显示遮罩
     mask.classList.remove('exit');
     mask.classList.add('active');
     await sleep(500);
 
-    const mainContent = document.getElementById('main-content');
-    renderPathNav(displayPath);
+    // 3. 准备渲染器
+    const renderer = new marked.Renderer();
+    renderer.code = ({ text, lang }) => {
+        if (lang === 'mermaid') return `<pre class="mermaid">${text}</pre>`;
+        return `<pre><code class="language-${lang}">${text}</code></pre>`;
+    };
 
+    renderPathNav(displayPath);
     const targetFile = getPhysicalPath(displayPath);
 
     try {
@@ -51,63 +104,95 @@ async function loadPage(rawPath) {
         if (!response.ok) throw new Error('404');
 
         let mdContent = await response.text();
-        mainContent.innerHTML = marked.parse(mdContent);
+        
+        // 预处理公式
+        mdContent = MathProtector.protect(mdContent);
+
+        // 解析 Markdown
+        let htmlResult = marked.parse(mdContent, { renderer });
+        
+        // 还原行内公式并注入 DOM
+        mainContent.innerHTML = MathProtector.restore(htmlResult);
+        
+        // 还原块级公式
+        MathProtector.restoreBlocks();
+
+        // 渲染 Mermaid
+        if (window.mermaid) {
+            await mermaid.run({
+                nodes: mainContent.querySelectorAll('.mermaid')
+            }).catch(err => console.error('Mermaid Error:', err));
+        }
+
         postProcess(mainContent, displayPath);
 
     } catch (e) {
-        // 404 逻辑：尝试寻找当前层级的 404.md
-        const dir = targetFile.substring(0, targetFile.lastIndexOf('/') + 1);
-        const errorRes = await fetch(SITE_CONFIG.PAGE_ROOT + dir + '404.md');
-        const errorText = errorRes.ok ? await errorRes.text() : "# 404\n页面丢失了";
-        mainContent.innerHTML = marked.parse(errorText);
+        console.error(e);
+        await renderError(targetFile);
     }
 
-    MathJax.typesetPromise([mainContent]).catch(console.error);
+    // 4. 渲染 MathJax
+    if (window.MathJax) {
+        MathJax.typesetClear([mainContent]);
+        MathJax.typesetPromise([mainContent]).catch(console.error);
+    }
+
+    // 5. 切换动画：隐藏遮罩
     mask.classList.remove('active');
     mask.classList.add('exit');
 }
 
-// 渲染自定义模块
+/**
+ * 错误处理渲染
+ */
+async function renderError(targetFile) {
+    const dir = targetFile.substring(0, targetFile.lastIndexOf('/') + 1);
+    const errorRes = await fetch(SITE_CONFIG.PAGE_ROOT + dir + '404.md');
+    const errorText = errorRes.ok ? await errorRes.text() : "# 404\n页面丢失了";
+    mainContent.innerHTML = marked.parse(errorText);
+}
+
+/**
+ * 后处理插件逻辑
+ */
 function postProcess(container, currentPath) {
-    // 友链图标
     container.querySelectorAll('avatar-link').forEach(el => {
-        if (typeof Avatar_Link === 'function')
-            el.innerHTML = Avatar_Link(el.getAttribute('site-name'), el.getAttribute('stie-url'), el.getAttribute('avatar-url'));
+        if (typeof Avatar_Link === 'function') {
+            el.innerHTML = Avatar_Link(
+                el.getAttribute('site-name'), 
+                el.getAttribute('stie-url'), 
+                el.getAttribute('avatar-url')
+            );
+        }
     });
 
-    // 博客列表 - 匹配 blog 或 blog/
-    if (currentPath === 'blog' || currentPath === 'blog/') {
+    if (currentPath.replace(/\/$/, '') === 'blog') {
         renderBlogList(container);
     }
 }
 
-// 博客列表
+/**
+ * 渲染博客列表
+ */
 async function renderBlogList(container) {
     try {
         const res = await fetch('/articles.json');
         const articles = await res.json();
-
         articles.sort((a, b) => new Date(b.created) - new Date(a.created));
 
-        const groups = {};
-        articles.forEach(a => {
+        const groups = articles.reduce((acc, a) => {
             const year = new Date(a.created).getFullYear();
-            if (!groups[year]) groups[year] = [];
-            groups[year].push(a);
-        });
+            if (!acc[year]) acc[year] = [];
+            acc[year].push(a);
+            return acc;
+        }, {});
 
         let html = '<div class="timeline-container">';
-        const years = Object.keys(groups).sort((a, b) => b - a);
-
-        years.forEach(year => {
-            html += `<h2 class="timeline-year">${year}</h2>`;
-            html += '<ul class="timeline-list">';
-
+        Object.keys(groups).sort((a, b) => b - a).forEach(year => {
+            html += `<h2 class="timeline-year">${year}</h2><ul class="timeline-list">`;
             groups[year].forEach(a => {
-                const dateObj = new Date(a.created);
-                const monthDay = `${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-
-                // 这里 data-path 不再带 .md
+                const date = new Date(a.created);
+                const monthDay = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
                 html += `
                 <li class="timeline-item">
                     <span class="timeline-date">${monthDay}</span>
@@ -116,26 +201,25 @@ async function renderBlogList(container) {
             });
             html += '</ul>';
         });
-
-        html += '</div>';
-        container.innerHTML += html;
+        container.innerHTML += html + '</div>';
     } catch (e) {
         container.innerHTML += '<p>无法加载文章列表</p>';
     }
 }
 
-// 路径导航
+/**
+ * 路径导航条
+ */
 function renderPathNav(displayPath) {
     const parts = displayPath.split('/').filter(p => p);
     let html = `<a data-path="">首页</a><span>/</span>`;
     let current = "";
-    
+
     parts.forEach((part, i) => {
         const isLast = i === parts.length - 1;
-        // 如果原始路径是以 / 结尾，或者这不是最后一项，则视为目录
         const isDir = displayPath.endsWith('/') || !isLast;
         current += part + (isDir ? "/" : "");
-        
+
         if (isLast && !displayPath.endsWith('/')) {
             html += `<span>${decodeURIComponent(part)}</span>`;
         } else {
@@ -145,86 +229,72 @@ function renderPathNav(displayPath) {
     document.getElementById('path-nav').innerHTML = html;
 }
 
-// 统一跳转函数
-function navigateTo(path) {
-    loadPage(path);
-}
+/**
+ * 主题管理
+ */
+const ThemeManager = {
+    btn: document.getElementById('theme-toggle'),
+    icon: document.getElementById('theme-icon'),
+    style: document.getElementById('markdown-style'),
+
+    init() {
+        const isDarkSaved = localStorage.getItem('darkMode') === 'true';
+        this.set(isDarkSaved);
+        if (this.btn) this.btn.onclick = () => this.set(!document.body.classList.contains('dark-mode'));
+    },
+
+    set(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        if (this.style) this.style.href = isDark ? SITE_CONFIG.DARK_STYLE : SITE_CONFIG.LIGHT_STYLE;
+        if (this.icon) {
+            this.icon.setAttribute('name', isDark ? 'dark_mode' : 'light_mode');
+            this.icon.innerText = isDark ? 'dark_mode' : 'light_mode';
+        }
+        localStorage.setItem('darkMode', isDark);
+    }
+};
+
+/**
+ * 事件监听与初始化
+ */
+document.addEventListener('click', e => {
+    const link = e.target.closest('[data-path]');
+    if (link) {
+        e.preventDefault();
+        loadPage(link.getAttribute('data-path'));
+    }
+});
 
 window.addEventListener('popstate', () => {
     const params = new URLSearchParams(window.location.search);
     loadPage(params.get('p') || SITE_CONFIG.DEFAULT_PAGE);
 });
 
-document.addEventListener('click', e => {
-    const link = e.target.closest('[data-path]');
-    if (link) {
-        e.preventDefault();
-        navigateTo(link.getAttribute('data-path'));
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    ThemeManager.init();
+    const params = new URLSearchParams(window.location.search);
+    loadPage(params.get('p') || SITE_CONFIG.DEFAULT_PAGE);
 });
 
-// 主题逻辑
-function initTheme() {
-    const btn = document.getElementById('theme-toggle');
-    const icon = document.getElementById('theme-icon');
-    const style = document.getElementById('markdown-style');
-
-    const set = (isDark) => {
-        document.body.classList.toggle('dark-mode', isDark);
-        if(style) style.href = isDark ? SITE_CONFIG.DARK_STYLE : SITE_CONFIG.LIGHT_STYLE;
-        if(icon) icon.setAttribute('name', isDark ? 'dark_mode' : 'light_mode');
-        localStorage.setItem('darkMode', isDark);
-        syncThemeIcon();
-    };
-
-    if(btn) btn.onclick = () => set(!document.body.classList.contains('dark-mode'));
-
-    const isDarkSaved = localStorage.getItem('darkMode') === 'true';
-    set(isDarkSaved);
-}
-
-function syncThemeIcon() {
-    const icon = document.getElementById('theme-icon');
-    if (icon) {
-        const isDark = document.body.classList.contains('dark-mode');
-        icon.innerText = isDark ? 'dark_mode' : 'light_mode';
+// 侧边栏逻辑
+const drawer = {
+    el: document.getElementById('side-drawer'),
+    overlay: document.getElementById('drawer-overlay'),
+    toggle(open) {
+        this.el?.classList.toggle('active', open);
+        document.body.style.overflow = open ? 'hidden' : '';
     }
-}
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-    const params = new URLSearchParams(window.location.search);
-    // 首次加载也经过标准路由处理
-    loadPage(params.get('p') || SITE_CONFIG.DEFAULT_PAGE);
+document.getElementById('menu-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    drawer.toggle(true);
+});
+
+drawer.overlay?.addEventListener('click', () => drawer.toggle(false));
+drawer.el?.querySelector('.drawer-links').addEventListener('click', (e) => {
+    if (e.target.closest('[data-path]')) drawer.toggle(false);
 });
 
 window.onfocus = () => document.title = SITE_CONFIG.IN_TITLE;
 window.onblur = () => document.title = SITE_CONFIG.OUT_TITLE;
-
-// 抽屉控制
-const drawer = document.getElementById('side-drawer');
-const menuBtn = document.getElementById('menu-btn');
-const drawerOverlay = document.getElementById('drawer-overlay');
-
-function toggleDrawer(open) {
-    if (open) {
-        drawer.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    } else {
-        drawer.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-menuBtn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleDrawer(true);
-});
-
-drawerOverlay?.addEventListener('click', () => toggleDrawer(false));
-
-drawer?.querySelector('.drawer-links').addEventListener('click', (e) => {
-    if (e.target.closest('[data-path]')) {
-        toggleDrawer(false);
-    }
-});
