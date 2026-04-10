@@ -123,7 +123,7 @@ async function loadPage(rawPath) {
 		mainContent.innerHTML = MathProtector.restore(htmlResult);
 
 		// 还原块级公式
-		MathProtector.restoreBlocks();
+		MathProtector.restoreBlocks(mainContent);
 
 		// 渲染 Mermaid
 		if (window.mermaid) {
