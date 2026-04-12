@@ -266,11 +266,14 @@ const ThemeManager = {
  * 事件监听与初始化
  */
 document.addEventListener('click', e => {
-	const link = e.target.closest('[data-path]');
-	if (link) {
-		e.preventDefault();
-		loadPage(link.getAttribute('data-path'));
-	}
+    // 只查找带有 data-path 的元素
+    const link = e.target.closest('[data-path]');
+    // 如果找不到，直接放行，不做任何处理
+    if (!link) return;
+
+    // 只对 data-path 链接阻止默认行为 + 路由加载
+    e.preventDefault();
+    loadPage(link.getAttribute('data-path'));
 });
 
 window.addEventListener('popstate', () => {
