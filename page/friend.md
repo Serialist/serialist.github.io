@@ -5,8 +5,12 @@
 
 ---
 
-我的网站：
+欢迎大佬添加友链！
 
-- title：
+- 标题：Serialist
 
-- 
+- 一句话简介：Serialist 的博客
+
+- 图标：https://www.serialist.top/assets/image/favicon.png
+
+- Email：ba3pt@qq.com
