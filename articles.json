@@ -62,7 +62,8 @@
         "author": "Serialist",
         "email": "ba3pt@qq.com",
         "created": "2025-08-24",
-        "modified": "2026-04-06"
+        "modified": "2026-04-27",
+        "tag": "hamradio"
     },
     {
         "id": "df492585",
@@ -136,5 +137,14 @@
         "email": "ba3pt@qq.com",
         "created": "2026-04-12",
         "modified": "2026-04-12"
+    },
+    {
+        "id": "688320fc",
+        "path": "E:\\serialist\\workspace\\markdown\\其他\\ffmpeg简单压缩视频.md",
+        "title": "使用 ffmpeg 简单压缩视频",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com",
+        "created": "2026-04-30",
+        "modified": "2026-04-30"
     }
 ]
