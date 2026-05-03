@@ -16,27 +16,29 @@
 
 ## 数学与控制
 
-[DR_CAN 控制理论](https://space.bilibili.com/230105574)
+控制理论相关知识：[DR_CAN 控制理论](https://space.bilibili.com/230105574)
 
-[【官方双语/合集】线性代数的本质 - 系列合集](https://www.bilibili.com/video/BV1ys411472E/?share_source=copy_web&vd_source=a0b30c57e9db0024aafc5b552bf0e321)
+非常及其强烈建议看：[【官方双语/合集】线性代数的本质 - 系列合集](https://www.bilibili.com/video/BV1ys411472E/?share_source=copy_web&vd_source=a0b30c57e9db0024aafc5b552bf0e321)
 
-[【知乎】韭菜的菜 - 状态估计/控制算法实践](https://www.zhihu.com/column/c_1296379521394929664)
+王洪玺珍贵笔记：[【知乎】韭菜的菜 - 状态估计/控制算法实践](https://www.zhihu.com/column/c_1296379521394929664)
+
+基于 py 的卡尔曼滤波教程：[github@rlabbe Kalman-and-Bayesian-Filters-in-Python](https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python)
 
 ## 电控 - 通用
 
-[keysking STM32 基础教程 + Freertos 教程](https://space.bilibili.com/6100925)
+超清晰动画 stm32 入门教程 up 主：[keysking STM32 基础教程 + Freertos 教程](https://space.bilibili.com/6100925)
 
-[合集 中科大 RoboMaster 电控教程](https://space.bilibili.com/337732684/lists/1043942?type=season)
+RMer 宝宝胎教视频，相当全面基础：[合集 中科大 RoboMaster 电控教程](https://space.bilibili.com/337732684/lists/1043942?type=season)
 
-[【RM2025-电控教学资料开源】中国科学技术大学RoboWalker战队](https://bbs.robomaster.com/wiki/4574/18267?source=7)
+上面视频的配套资料：[【RM2025-电控教学资料开源】中国科学技术大学RoboWalker战队](https://bbs.robomaster.com/wiki/4574/18267?source=7)
 
-[上海交通大学 RoboMaster 交龙战队博客 | 云汉交龙](https://sjtu-robomaster-team.github.io/)
+交爷！[上海交通大学 RoboMaster 交龙战队博客 | 云汉交龙](https://sjtu-robomaster-team.github.io/)
 
-[Hello World 技术知识库](https://zju-helloworld.github.io/Wiki/)
+浙爷！[Hello World 技术知识库](https://zju-helloworld.github.io/Wiki/)
 
-[AddisionHarry的知识库](https://www.yuque.com/addisionharry/technologycompetition)
+大佬的知识库：[AddisionHarry的知识库](https://www.yuque.com/addisionharry/technologycompetition)
 
-[GrassFanWang / COD-H7-Template](https://github.com/GrassFanWang/COD-H7-Template)
+COD王草凡大神开源，达妙stm32h7工程模板：[GrassFanWang / COD-H7-Template](https://github.com/GrassFanWang/COD-H7-Template)
 
 ## 电控 - 底盘控制
 
@@ -50,20 +52,22 @@
 
 [【分享帖】四元数&向量外积补偿IMU姿态解算（九轴）](https://bbs.robomaster.com/wiki/4574/7420?source=7)
 
-[WangHongxi2001 / RoboMaster-C-Board-INS-Example](https://github.com/WangHongxi2001/RoboMaster-C-Board-INS-Example)
+王洪玺大神开源，RM C 板开源陀螺仪：[WangHongxi2001 / RoboMaster-C-Board-INS-Example](https://github.com/WangHongxi2001/RoboMaster-C-Board-INS-Example)
 
 ## 电控 - 轮足
 
-[RoboMaster平衡步兵机器人控制系统设计 - 知乎](https://zhuanlan.zhihu.com/p/563048952)
+王洪玺轮腿圣经，伟大无需多言：[RoboMaster平衡步兵机器人控制系统设计 - 知乎](https://zhuanlan.zhihu.com/p/563048952)
 
-[【RM AWARD 2024】电子科技大学中山学院 RoboBraver 柳幸之 部分技术成果说明](https://bbs.robomaster.com/article/22843?source=0)
+柳佬开源，进阶轮腿思路分析：[【RM AWARD 2024】电子科技大学中山学院 RoboBraver 柳幸之 部分技术成果说明](https://bbs.robomaster.com/article/22843?source=0)
 
-[【RM2023-平衡步兵控制系统开源】上海交通大学-云汉交龙](https://bbs.robomaster.com/wiki/4574/9430?source=7)
+交开源控制：[【RM2023-平衡步兵控制系统开源】上海交通大学-云汉交龙](https://bbs.robomaster.com/wiki/4574/9430?source=7)
 
 [WilliamGwok / RP_Balance](https://github.com/WilliamGwok/RP_Balance)
 
-[闲居](https://xianmengxi.github.io/)
+一些轮腿经验：[闲居](https://xianmengxi.github.io/)
+
+mas的伟大完全开源，用的上交建模：[【RM2025 个人开源】山海机甲平衡步兵完全开源-RoboMaster 社区](https://bbs.robomaster.com/article/810688?source=4)
 
 ## 算法 - 视觉
 
-[上海科技大学2026视觉技术方案开源](https://fcn47qghdcqf.feishu.cn/wiki/Hcw1wxTMZicx0xkinuQcKHetn5d?from=from_copylink)
+上科大大佬开源视觉——从入门到入土：[上海科技大学2026视觉技术方案开源](https://fcn47qghdcqf.feishu.cn/wiki/Hcw1wxTMZicx0xkinuQcKHetn5d?from=from_copylink)
