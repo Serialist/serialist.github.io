@@ -11,15 +11,6 @@
         "email": "ba3pt@qq.com"
     },
     {
-        "id": "04860c48",
-        "path": "E:\\serialist\\workspace\\markdown\\robomaster\\RM电控资源.md",
-        "created": "2026-01-21",
-        "modified": "2026-04-13",
-        "title": "RM 电控开源资料",
-        "author": "Serialist",
-        "email": "ba3pt@qq.com"
-    },
-    {
         "id": "eae5e989",
         "path": "E:\\serialist\\workspace\\markdown\\robomaster\\物资.md",
         "created": "2025-11-25",
@@ -146,5 +137,15 @@
         "email": "ba3pt@qq.com",
         "created": "2026-04-30",
         "modified": "2026-04-30"
+    },
+    {
+        "id": "bc94e4fe",
+        "path": "E:\\serialist\\workspace\\markdown\\robomaster\\RM 开源资料汇总.md",
+        "created": "2026-01-21",
+        "tag": "robomaster",
+        "title": "RM 开源资料汇总",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com",
+        "modified": "2026-05-03"
     }
 ]
