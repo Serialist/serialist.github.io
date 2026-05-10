@@ -147,5 +147,14 @@
         "author": "Serialist",
         "email": "ba3pt@qq.com",
         "modified": "2026-05-05"
+    },
+    {
+        "id": "4b2d1e6b",
+        "path": "E:\\serialist\\workspace\\markdown\\嵌入式\\STM32 芯片锁死的解决.md",
+        "title": "Hello World",
+        "author": "Serialist",
+        "email": "ba3pt@qq.com",
+        "created": "2026-05-10",
+        "modified": "2026-05-10"
     }
 ]
