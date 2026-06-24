@@ -169,7 +169,7 @@ class BlogManager:
         title = (
             meta.get("title")
             or ext_title
-            or getattr(self.args, "default_title", "")
+            or (self.args.default_title if getattr(self.args, "default_title", None) else None)
             or os.path.splitext(os.path.basename(fpath))[0]
         )
 
