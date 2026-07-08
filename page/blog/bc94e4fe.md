@@ -10,13 +10,13 @@
 
 ---
 
-## 技术之外
+# 技术之外
 
 [提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md)
 
 [【提问的艺术】RM版](https://bbs.robomaster.com/article/810096?source=4)
 
-## 数学与控制基础
+# 数学与控制基础
 
 [【控制理论】DR_CAN](https://space.bilibili.com/230105574)
 
@@ -30,21 +30,21 @@
 
 [【Github】基于 py 的卡尔曼滤波教程](https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python)
 
-## 物品使用
+# 物品使用
 
 [【RoboMaster 社区】大疆电池使用](https://bbs.robomaster.com/article/9289)
 
 [【RoboMaster 社区】 DT7 & DR16遥控接收系统 使用与维护手册](https://bbs.robomaster.com/article/9629?source=4)
 
-## 编程与程序设计
+# 编程与程序设计
 
 [电控组代码规范 | Javen的技术博客](https://shen-jiewen.github.io/2024/11/18/电控组代码规范/)
 
-## GitHub
+# GitHub
 
 [SCUTRobotLab - 华东理工](https://github.com/scutrobotlab)
 
-## 网站
+# 网站
 
 [上海交通大学 RoboMaster 交龙战队博客 | 云汉交龙](https://sjtu-robomaster-team.github.io/)
 
@@ -54,7 +54,7 @@
 
 [Smateroboter](https://hi-ling.github.io/robomaster_website/)
 
-## 电控 - 通用
+# 电控 - 通用
 
 [【STM32 基础 + Freertos 教程】keysking](https://space.bilibili.com/6100925)
 
@@ -76,17 +76,27 @@
 
 >梦中情码
 
-## 嵌入式 - 调试
+# 嵌入式 - 调试
 
 [【STM32卡死、跑飞、HardFault_Handler】调试如何精准的确定问题](https://blog.csdn.net/m0_74676415/article/details/144341038)
 
-## 控制 - 底盘
+# 控制 - 底盘
 
 [【麦克纳姆轮底盘】简单分析](https://blog.csdn.net/m0_55933541/article/details/134040714)
 
 [【麦克纳姆轮运动模型】适合 RM 宝宝体质 知乎](https://zhuanlan.zhihu.com/p/609678279)
 
-## 控制 - 姿态解算
+# 控制 - 云台
+
+[【二轴云台末端指向控制】- 知乎](https://zhuanlan.zhihu.com/p/1988696935104811632)
+
+[LamdaDay/YAW_Auto_Controller: 搭配同济自瞄的云台yaw轴控制器算法](https://github.com/LamdaDay/YAW_Auto_Controller)
+
+# 控制 - 姿态解算
+
+
+
+
 
 [【王洪玺 C板 陀螺仪解算 EKF】GitHub](https://github.com/WangHongxi2001/RoboMaster-C-Board-INS-Example)
 
@@ -94,7 +104,7 @@
 
 [【陀螺仪解算 Mahony】王洪玺 博客园](https://www.cnblogs.com/WangHongxi/category/1655021.html)
 
-## 控制 - 功率限制
+# 控制 - 功率限制
 
 [【功率控制】西交利物浦大学 RM2023 RoboMaster社区](https://bbs.robomaster.com/article/9438?source=4)
 
@@ -102,17 +112,17 @@
 
 >   RLS拟合参数和大P分配，c++，注意github和论坛附件不一样github版本新一点
 
-## 轮足
+# 轮足
 
-### 电控
+## 电控
 
 [【RoboMaster平衡步兵机器人控制系统设计】王洪玺 哈工程创梦之翼 知乎](https://zhuanlan.zhihu.com/p/563048952)
 
->   轮腿圣经
+>   aka 轮腿圣经
 
 [【平衡步兵控制系统开源】上海交通大学云汉交龙 RM2023 RoboMaster社区](https://bbs.robomaster.com/article/9430)
 
->   上交建模
+>   aka 上交建模
 
 [【RM AWARD 2024】电子科技大学中山学院 RoboBraver 柳幸之 部分技术成果说明](https://bbs.robomaster.com/article/22843?source=0)
 
@@ -138,37 +148,41 @@
 
 [【RM2026-考虑质心偏移的轮腿型机器人建模开源】香港大学 HerKules战队-RoboMaster 社区](https://bbs.robomaster.com/article/1448924?source=1)
 
-### 机械
+## 机械
 
 [ACE战队 2024-2025赛季轮腿机器人技术文档-机械-RoboMaster 社区](https://bbs.robomaster.com/article/728195?source=4)
 
 [【RM2024-轮腿平衡步兵机械开源】武汉工程大学-RoboMaster 社区](https://bbs.robomaster.com/article/9657?source=4)
 
-### 硬件
+## 硬件
 
 [【RM2026 - 关节电容和控制器开源 - 西安交通大学笃行战队】-RoboMaster 社区](https://bbs.robomaster.com/article/1884440?source=1)
 
-## 飞镖
+# 飞镖
 
 [【RM2026-北京理工大学-DreamChaser战队】300FPS识别帧率FPGA制导飞镖开源【1/5 硬件篇】-RoboMaster 社区](https://bbs.robomaster.com/article/1438280)
 
-## 硬件
+# 硬件
+
+[南京邮电大学Potential战队N630电调-RoboMaster 社区](https://bbs.robomaster.com/article/811470)
+
+>   在嘉立创的开源地址：[N630电调 - 立创开源硬件平台](https://oshwhub.com/njupt-robomasters/n630)
 
 [【RM2026-无感FOC驱动方案开源】华南师范大学（佛山）-VANGUARD战队-RoboMaster 社区](https://bbs.robomaster.com/article/1884467?source=1)
 
 [【RM2026-MP2480小体积荧光充能驱动开源】华南师范大学（佛山）-VANGUARD战队-RoboMaster 社区](https://bbs.robomaster.com/article/1884465?source=1)
 
-## 机械
+# 机械
 
 [【RM2025 裁判系统、电机电调、其他官方元器件、Solidworks插件及说明书汇总集合】仲恺农业工程学院-奇点战队-RoboMaster 社区](https://bbs.robomaster.com/article/772526?source=8)
 
-## 视觉
+# 视觉
 
-[上海科技大学2026视觉技术方案开源](https://fcn47qghdcqf.feishu.cn/wiki/Hcw1wxTMZicx0xkinuQcKHetn5d?from=from_copylink)
+[【RM2026-AX650自瞄视觉项目开源】上海科技大学-magician-RoboMaster 社区](https://bbs.robomaster.com/article/1883871)
 
 >   从入门到入土
 
-## 管理
+# 管理
 
 [【方案 规划 质量 人员 成本 RM AWARD 2025】中石大（华东）RPS 张淄栋 -RoboMaster 社区](https://bbs.robomaster.com/article/1884426?source=1)
 
