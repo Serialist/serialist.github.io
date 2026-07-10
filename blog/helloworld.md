@@ -21,7 +21,7 @@ hello world
 
 隔年春，了解到 [MDUI](https://www.mdui.org/zh-cn/) 组件库，想起网站胎死腹中，于是又写了一点垃圾放在 github page 上。但由于水平不足，加之不太会用 git 导致仓库很乱，最后再一次废弃了。
 
-<img src="./assets/image-20260710185937978.png" alt="image-20260710185937978" style="zoom: 33%;" />
+![image-20260710185937978](./assets/image-20260710185937978.png)
 
 >   <div style="text-align: center">网站小时候的照片</div>
 
