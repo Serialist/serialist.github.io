@@ -1,21 +1,28 @@
-# ABOUT
+## ABOUT ME
 
-## 关于我
+-   惨入大三
+-   不了解电控
+-   在玩 OSU! 4K 喜欢敲击键盘是为了解压（？）
+-   穷玩业余无线电（[BA3PT](https://www.qrz.com/db/BA3PT)）
+-   技术栈为 0 什么都不会
+-   喜欢下雪，和不出门时下的雨
+-   不是二次元
+-   没有能力也没有动力打RM了，，，
+-   讨厌人类，尤其讨厌讨厌别人的人
+-   想学数学但学不懂
+-   活着好累想变成企鹅咕咕嘎嘎然后跳到海里喂虎鲸
+-   在看博物和中国国家地理
 
-职业：大二
+## ABOUT  WEBSITE
 
-活动：
+-   约诞生于 2024 年秋，复活于2025年秋
+-   手写加 AI
+-   单个页面，使用 marked 和 mathjax 前端渲染 markdown 文章
+-   按照 github-markdown 语法及其样式
+-   AI 真好用吧
+-   以后会把单页面改为渲染成 html，因为前端每次渲染太卡了
+-   可能会加评论系统（？）
+-   不会平面设计，所以很简陋
+-   想写点好东西，但是手搓文章质量堪忧，思想浅薄见识短浅，内容差劲万望谅解
 
-- 嵌入式
-- RoboMaster CHD VGD 轮腿电控
-- 业余无线电
-  我的呼号是 [BA3PT](https://www.qrz.com/db/BA3PT)，B 类操作员.
-  活动范围：
-  - FM 卫星转发器（JYR u7v4 YAGI + UVK6）（正在积攒全模式电台碎片）
-  - 短波（RIG: Kenwood TRC-80; ANT: 20 MTR EFHW）
-
-## 关于网站
-
-网站基于单个页面，使用 marked、mathjax 渲染，github-markdown 语法和样式。
-
-感谢 AI 开源！
+>   Last Modified: 2026-07-10
