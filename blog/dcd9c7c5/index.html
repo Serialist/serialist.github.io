@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>CSS 入门</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>CSS 入门</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>CSS 入门</h1>
+<h2>CSS是什么</h2>
+<p>CSS 定义了<strong>如何显示</strong> HTML 元素。</p>
+<p>因为多个样式定义可层叠为一个，所以叫层叠样式表（<strong>C</strong>ascading <strong>S</strong>tyle <strong>S</strong>heets）。</p>
+<blockquote>
+<p>CSS在<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">MDN</a>上的定义：</p>
+<p><strong>层叠样式表</strong>（Cascading Style Sheets，缩写为 <strong>CSS</strong>）是一种样式表语言，用来描述 HTML 或 XML（包括如 SVG、MathML 或 XHTML 之类的 XML 分支语言）文档的呈现方式。CSS 描述了在屏幕、纸质、音频等其他媒体上的元素应该如何被渲染的问题。</p>
+</blockquote>
+<h2>为什么用CSS</h2>
+<p>CSS可以从HTML中<strong>分离出样式的定义</strong>。</p>
+<ul>
+<li>浏览器（Netscape 和 Internet Explorer）<strong>曾</strong>不断地向 HTML 规范中添加新的<strong>标签</strong>和<strong>属性</strong>（比如字体标签和颜色属性），使<strong>文档内容难以阅读</strong>。HTML 4.0 中添加了样式，实现了<strong>内容</strong>与<strong>表现</strong>分离</li>
+<li>外部样式表可以极大提高工作效率，只编辑一个 CSS 文档就可以改变所有页面的布局和外观</li>
+</ul>
+<h2>基本语法</h2>
+<h3>规则集</h3>
+<p>css的基本元素是<strong>规则集</strong>（ruleset，简称为<strong>规则</strong>）。一段css代码可以有多个规则。</p>
+<pre><code class="language-css">rule
+rule
+</code></pre>
+<p>一条规则包括<strong>选择器</strong>（selector）和<strong>声明</strong>（declaration）。声明可以有多个。</p>
+<ul>
+<li>声明应在成对的大括号里（<code>{}</code>）</li>
+<li>在规则集里，声明要用分号（<code>;</code>）分隔</li>
+</ul>
+<pre><code class="language-css">selector {
+    declaration;
+    declaration;
+}
+selector {
+    declaration;
+    declaration;
+}
+</code></pre>
+<p>一个声明包括<strong>属性</strong>（properties）和<strong>属性值</strong>（property value）。</p>
+<ul>
+<li>属性与属性值要用冒号（<code>:</code>）分隔</li>
+<li>声明用分号（ ; ）结尾</li>
+</ul>
+<pre><code class="language-css">selector {
+    properties: property_value;
+    properties: property_value;
+}
+selector {
+    properties: property_value;
+    properties: property_value;
+}
+</code></pre>
+<h3>注释</h3>
+<p>CSS的注释标注在 /* 和 */ 之间，可以换行。</p>
+<p>最后来看一段完整的css代码。</p>
+<pre><code class="language-css">/*注释1*/
+mytag {
+    color: red;
+    width: 256px;
+}
+.myClass {
+    /*注释2*/
+    color: blue;
+    heigth: 64px;
+}
+#myID {
+    color: yellow;
+    heigth: 16px;
+}
+</code></pre>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>PID 控制器 - 1</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>PID 控制器 - 1</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>PID 控制器 - 1</h1>
+<p>PID，比例-微分-积分控制，是大部分控制人的第一课。</p>
+<p>从 PID 开始，“电控” 不再只是电子电路、寄存器和代码，而是建立在此基础上的控制，成为真正的电<strong>控</strong>。</p>
+<p>通过 PID 控制算法，你可以很容易的控制电机旋转、平衡车等许多以前难以控制的系统。</p>
+<h2>控制是什么</h2>
+<p>控制就是通过某种方法，让系统达到目标状态。</p>
+<h3>系统和状态</h3>
+<p>如果我们控制一个平衡车，就可以把它叫做一个系统，它是我们控制的对象。</p>
+<p>系统本质就是一个函数：输入一个量，然后得到下一刻状态</p>
+$$ 
+\displaylines{
+u = \begin{pmatrix} 电机力矩 \end{pmatrix} \\
+x = \begin{pmatrix} 倾角 \\ 倾角角速度 \\ 位移 \\ 速度 \end{pmatrix} \\
+x_t, u_t \overset{f}{\rightarrow}x_{t+1}
+} 
+$$
+
+
+
+<blockquote>
+<p>实际状态转移方程，应该写为$\dot x = f(x,u)$，不过为了方便可以理解为这种时间的递推关系</p>
+</blockquote>
+<p>u 叫控制量，x 叫状态变量，f 就是这个平衡车系统。</p>
+<p>通过力学和运动学建模，函数 f 是可以写出来的，但大多数时候它都相当复杂。</p>
+<h3>开环和闭环</h3>
+<p>通过某种规律直接控制，而不去检查到底有没有达到目标，这是开环控制：</p>
+<pre><code class="language-mermaid">graph LR
+input((输入)) --目标值（target）--&gt; controller[控制器]
+controller --控制量（u）--&gt; actuator[执行器]
+actuator --力、力矩等--&gt; system[被控制的系统]
+system --&gt; y((系统状态))
+</code></pre>
+<p>检查了当前状态和目标的差距，再根据这个差距去控制，这是闭环控制：</p>
+<pre><code class="language-mermaid">graph LR
+input((输入)) --目标值（target）--&gt; controller[控制器]
+controller --控制量（u）--&gt; actuator[执行器]
+actuator --力、力矩等--&gt; system[被控制的系统]
+system --&gt; y((系统状态))
+system --&gt; sensor[传感器]
+sensor --测量值（measrue）--&gt; controller
+</code></pre>
+<p>开环大部分情况都不一定能达到目标，而闭环通过了解还差多少，可以更逼近目标。</p>
+<p>PID 是闭环控制。</p>
+<pre><code class="language-mermaid">graph LR
+A[设定值] --&gt;|输入| E(误差 e)
+E --&gt; P[比例 P]
+E --&gt; I[积分 I]
+E --&gt; D[微分 D]
+P --&gt; U[输出 u]
+I --&gt; U
+D --&gt; U
+U --&gt; C[被控对象]
+C --&gt; F[传感器]
+F --&gt;|反馈| E
+</code></pre>
+<h2>PID 公式</h2>
+<p>PID 最原始的公式长这样：</p>
+<p>目标值和测量值的误差为 e (error)：</p>
+$$ 
+\displaylines{
+e = x_{target} - x_{measure}
+} 
+$$
+
+
+
+<p>对于控制量 u，设 $T_i$ 是积分时间，$T_d$ 是微分时间，有</p>
+$$ 
+\displaylines{
+u = K_p ( e + \frac{1}{T_i} \int^t_0 e \ dt + T_d \frac{de}{dt} )
+} 
+$$
+
+
+
+<p>这个公式实在反人类，所以简化：</p>
+$$ 
+\displaylines{
+u = K_p \cdot e + K_i \cdot \int e + K_d \cdot \dot e
+} 
+$$
+
+
+
+<blockquote>
+<p>$\dot e$ 即 e 的微分，这是一种常用的表示。</p>
+</blockquote>
+<p>我们发现它分三项：</p>
+<ul>
+<li><p>比例项：e 乘比例</p>
+</li>
+<li><p>积分项：积分乘比例</p>
+</li>
+<li><p>微分项：微分乘比例</p>
+</li>
+</ul>
+<p>比例（Proportion），积分（Integration），微分（Differentiation），取首字母故曰 PID。</p>
+<p>这三个比例就是我们需要手动调的参数。</p>
+<p>为了理解 PID 我们一项一项的理解。</p>
+<h2>感性地理解 PID</h2>
+<p>假设光滑平面有一个小木块，目标是让它到某个位置（状态量），手段是给它施加一个力（控制量）。</p>
+<p>令位移是 x，目标是 $x_0$，力 F = u，则 $e = x_0 - x$。</p>
+<h3>只有比例项（P 控制）</h3>
+<p>根据常识，我们会<strong>反方向</strong>拉木块，并且离 $x_0$ <strong>越远越用力</strong>，即：</p>
+$$ 
+\displaylines{
+u = K_p \cdot e
+} 
+$$
+
+
+
+<p>这时 $K_p$ 越大，反应越大。</p>
+<p>但我们不幸的发现，这就是是<strong>胡克定律</strong>：控制器相当于<strong>弹簧</strong>，木块做简谐运动！</p>
+<p>考虑阻力时，确实会逐渐停止，但不一定停得快，正常我们也不希望有摩擦。</p>
+<h3>弹簧阻尼：比例 + 微分（PD 控制）</h3>
+<p>于是手动加阻力，让输出减速.</p>
+<p>微分（导数）就是速度，让阻力和速度成正比，于是：</p>
+$$ 
+\displaylines{
+u = K_p \cdot e + K_d \cdot \dot e
+} 
+$$
+
+
+
+<p>微分项可以理解为根据误差变化率提前“刹车”，抑制超调与震荡（目标值恒定时，$\dot e = \dot x_0 - \dot x = -\dot x$，此时微分项与木块速度负相关）。这时的 PD 控制器就是<strong>有阻力的弹簧</strong>：震幅度减小，逐渐停在 $x_0$。</p>
+<p>其实微分项也可以理解为：</p>
+$$ 
+\displaylines{
+K_d \cdot \dot e = -K_d \cdot \dot x
+} 
+$$
+
+
+
+<p>即通过误差的变化率，间接对木块速度进行调节：x 偏离目标远时，位移项发力；接近目标时，误差变化率主导，让木块速度逐渐趋近于 0。</p>
+<p>PD 控制器，在没有持续外力干扰时，大部分情况够用了。但如果加个外力呢？</p>
+<h3>静态误差：加积分（PID 控制器）</h3>
+<p>如果存在一个给物块的外力。</p>
+<p>前面说 PD 控制即带阻力的弹簧，据高中物理，弹簧受恒外力，最终会保持一个形变：</p>
+<ul>
+<li>当稳定时，$\dot e = 0$，而 $F_{外力} = u = K_p \cdot e$。为了抵消恒外力，最终 e 会恒定在一个值，造成稳态误差</li>
+</ul>
+<p>这有点像小学水池一边加水、一边放水的问题？</p>
+<p>为了衡量误差持续时间，其造成的影响，于是把 e 对时间积分：</p>
+$$ 
+\displaylines{
+u = K_p \cdot e + K_i \cdot \int e + K_d \cdot \dot e
+} 
+$$
+
+
+
+<p>一直偏移，就一直积分，积分项就不断增大，最终抵消误差。</p>
+<p>我们最终得到了完整的 PID 控制器。</p>
+<h2>PID 控制器的代码部署</h2>
+<p>下面给出一个简单的 PID 控制器，基于 C 语言。</p>
+<p>首先实现微分和积分。上面的数学公式都是时间连续形式的，但我们的程序不是，一般会有一个循环周期（如1ms或2ms），也称作 PID 的控制周期，这称之为离散形式。这个过程叫做<strong>离散化</strong>。</p>
+<p>积分的离散形式就是累加（或说求和），微分的离散形式就是差分（逐个相减）：</p>
+$$ 
+\displaylines{
+\int_0^t e dt= \sum^t e_i \Delta T \\
+\dot e_t = \frac{e_t - e_{t-1}}{\Delta T}
+} 
+$$
+
+
+<p>其中 $\Delta T$ 就是循环周期，$e_t$ 这样的变量就是指 e 在第 t 时刻的值。</p>
+<p>我们写成 c 代码：</p>
+<pre><code class="language-c">int main(){
+    
+float int_e=0,  // 积分
+      diff_e=0; // 微分
+float e,      // 误差
+      prev_e; // 上次的误差(previous error)
+const float dt = 0.001; // 控制周期为 1 ms = 0.001 s
+
+// 进入控制循环
+while(1){
+    // 首先更新误差
+    prev_e = e;                // 保存上一次循环时，计算的误差
+    e      = target - measure; // 设目标值、测量值，他们可能来自其他地方
+    
+    // 然后计算积分和微分
+    int_e  +=  e           * dt;
+    diff_e  = (e - prev_e) / dt;
+    
+    // 循环结束，等待一个dt后进入下一次循环
+    delay_ms(1);
+}
+    
+}
+</code></pre>
+<p>这样我们就可以近似得到误差的积分、微分了。于是我们就可以计算PID了：</p>
+<pre><code class="language-c">int main(){
+
+float kp = 1, // 假设 pid 的三个参数  **新增**
+      ki = 1,
+      kd = 1;
+float int_e=0,  // 积分
+      diff_e=0; // 微分
+float e,      // 误差
+      prev_e; // 上次的误差(previous error)
+float output; // 输出 **新增**
+const float dt = 0.001; // 控制周期为 1 ms = 0.001 s
+
+// 进入控制循环
+while(1){
+    // 首先更新误差
+    prev_e = e;                // 保存上一次循环时，计算的误差
+    e      = target - measure; // 假设目标值（可能来自遥控）、测量值（可能来自传感器）
+    
+    // 然后计算积分和微分
+    int_e  +=  e           * dt;
+    diff_e  = (e - prev_e) / dt;
+    
+    // 计算pid **新增**
+    output =   kp * e
+             + ki * int_e
+             + kd * diff_e;
+    
+    // output 可能会发送给电机
+    
+    // 循环结束，等待一个dt后进入下一次循环
+    delay_ms(1);
+}
+    
+}
+</code></pre>
+<p>但是这样写太难看了，而且可能有多个pid，我们的代码没办法<strong>复用</strong>，所以我们写成一个函数来储存计算过程代码，用一个结构体来储存这些变量：</p>
+<pre><code class="language-c">// ----------------------------- PID 定义 -------------------------------
+
+struct PID_Data{
+    float kp, ki, kd;
+    float int_e, diff_e;
+    float e, prev_e;
+    float output;
+    float dt; 
+};
+
+// 用来给结构体初始化，init是initial的缩写。
+void PID_Init(struct PID_Data *self, float kp, float ki, float kd, float dt){
+    self-&gt;kp = kp;
+    self-&gt;ki = ki;
+    self-&gt;kd = kd;
+    self-&gt;int_e = 0;
+    self-&gt;diff_e = 0;
+    self-&gt;e = 0;
+    self-&gt;prev_e = 0;
+    self-&gt;output = 0;
+    self-&gt;dt = dt;
+    
+    // Q：为什么要给其他值清零？
+    // A：如果你把结构体变量，定义在全局，默认都会赋0；但如果你
+    //    在局部定义变量，结构体中各个值不会清零。这会造成严重
+    //    后果。例如int_e积分初始若为999999，输出值会爆炸的！
+}
+
+float PID_Updata(struct PID_Data *self, float target, float measure){
+    // 更新误差
+    self-&gt;prev_e = self-&gt;e;
+    self-&gt;e      = target - measure;
+    
+    // 计算积分、微分
+    self-&gt;int_e  +=  self-&gt;e                 * self-&gt;dt;
+    self-&gt;diff_e  = (self-&gt;e - self-&gt;prev_e) / self-&gt;dt;
+    
+    // 计算pid
+    self-&gt;output =   self-&gt;kp * self-&gt;e
+                   + self-&gt;ki * self-&gt;int_e
+                   + self-&gt;kd * self-&gt;diff_e;
+    
+    return self-&gt;output;
+}
+
+// ----------------------------- 使用 -------------------------------
+// 只是demo代码，展示怎么使用上面的PID定义
+
+struct PID_Data yaw_motor_pid;
+struct PID_Data pitch_motor_pid;
+
+int main(){
+    // 初始化pid
+    PID_Init(&amp;pitch_motor_pid, 10, 0.1, 2, 0.001);
+    PID_Init(&amp;yaw_motor_pid,   20, 0  , 5, 0.001);
+    
+    // 控制循环
+    while(1){
+        float pitch_output;
+        float yaw_output;
+        
+        // 控制
+        pitch_output = PID_Updata(&amp;pitch_motor_pid, 0, imu.pitch_angle);
+        yaw_output   = PID_Updata(&amp;yaw_motor_pid,   0, imu.yaw_angle);
+        
+        // 输出
+        Motor_Send_Message(&amp;pitch_motor, pitch_output);
+        Motor_Send_Message(&amp;yaw_motor,   yaw_output);
+        
+        // 周期1ms
+        delay_ms(1);
+    }
+}
+</code></pre>
+<h2>PID 的拓展</h2>
+<p>PID的局限性：</p>
+<ol>
+<li>在我以上的代码中，我没有对输出值限幅，这可能使电机超出额定工作能力，导致损毁。同时，我也没有对积分限幅，这可能导致超调。</li>
+<li>PID本身是对线性系统的控制，例如我例子中的物块。如果是平衡车，他的运动就没那么简单了，这可能导致控制效果变差。</li>
+</ol>
+<p>这样看来，PID控制器本身局限性很大。但因为他简单易调可操作，依旧是运用最广泛的控制器。而为了弥补局限性，让PID在不同的地方依旧能够有较好的效果，人们已经在PID<strong>上</strong>有了大量的拓展：</p>
+<ul>
+<li>输出限幅</li>
+<li>积分限幅</li>
+<li>多环串级PID</li>
+<li>微分先行</li>
+<li>积分分离</li>
+<li>模糊PID</li>
+<li>分段PID（或说增益调度PID）</li>
+<li>自适应PID</li>
+<li>遗传算法PID整定</li>
+<li>参数辨识PID整定</li>
+</ul>
+<p>在PID外，我们也常常需要用一些<strong>补偿</strong>，让PID效果更好，即<strong>前馈</strong>，例如对阻力、重力补偿等等。他们可以让PID更接近线性系统，减少稳态误差。（如果能够用前馈，就最好不要用PID的积分，积分必然导致延迟）。</p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+	<script src="/assets/script/config.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

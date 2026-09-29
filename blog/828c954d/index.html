@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>hello world</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>hello world</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>Welcome to Serialist‘s!!!</h1>
+<p>hello world</p>
+<hr>
+<h2>关于网站</h2>
+<p>虽然写的创建时间是 2024-10-05，但其实只有上面这两行是。这两行是整理电脑时，找到的 serialist.top 域名下的第一个 index.html。为了纪念就把这两行当作创建时间吧。</p>
+<pre><code class="language-html">&lt;h1&gt;Welcome to Serialist‘s!!!&lt;/h1&gt;
+&lt;p&gt;hello world&lt;/p&gt;
+</code></pre>
+<p>国庆节期间没事做，于是学了点前端，注册了第一个域名，白嫖了服务器，于是部署了 nginx 随便写了一个页面上去。后来服务器过期了就搁置了。</p>
+<p>隔年春，了解到 <a href="https://www.mdui.org/zh-cn/">MDUI</a> 组件库，想起网站胎死腹中，于是又写了一点垃圾放在 github page 上。但由于水平不足，加之不太会用 git 导致仓库很乱，最后再一次废弃了。</p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/0c2f4e944074.png" alt="image-20260710185937978"></p>
+<blockquote>
+  <div style="text-align: center">网站小时候的照片</div></blockquote>
+<p>暑假间了解到 Markdown 和 tex，浅尝后发现自己做渲染有些麻烦，于是用了 MKdocs。博客框架建网站很友好，尤其是用的 python，因为我不太不想用 node。这时候也写了一些东西。</p>
+<p>9 月左右了解到 <a href="https://hongliu.icu">Hongliu</a> 也开始做博客后，我打开了许久没动的网站，决心重构。好在 AI 大力支持，加之再次认真学习，最终进化成了现在单页面网站的样子。其实一开始不知道 SPA，只是希望更好地复用如导航栏、页脚这些部件，而内容都由 md 文档的前端渲染，结果最后就改成单页面了。</p>
+<p>网站的具体历史已记不清，只剩下了留下的文档的创建时间，和 whois 上的域名记录。为了冒充老资历，且当网站创建在 24 年 10 月吧，不过真正复活是在重构之后。</p>
+<p>之前的内容，有的还没放回来，而有的已经永远找不到了（泣）。</p>
+<h2>关于博客</h2>
+<p>Blog，也就是 weB-LOG，互联网日志。</p>
+<p>博客是传统的、也是最原始的互联网自留地。我喜欢看博客，尤其喜欢技术、生活、旅游内容的。</p>
+<p>博客里有最安静的思考。博客和公众号、视频频道、推特、微博相似，但没有推送机制和嘈杂的评论。他更像自言自语，像流浪瓶，即使是有评论功能的博客，也更像是带批注的书。</p>
+<p>能读进书是能静下心思考的表现。能认真写博客、读博客，或许也是类似吧。如今，静下心思考的能力如此难能可贵，这也是做博客的意义之一吧。</p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

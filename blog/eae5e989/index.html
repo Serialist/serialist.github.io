@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>RM物资目录</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>RM物资目录</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>RM物资目录</h1>
+<blockquote>
+<p>持续更新ing</p>
+</blockquote>
+<h2>电机和电调</h2>
+<h3>M3508 &amp; C620</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/general/M3508">M3508减速电机套装</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/76b56e47901b.jpg" alt="img"></p>
+<p>最常见的直流减速电机，提供动力。</p>
+<ol>
+<li>通常作为轮毂电机，驱动底盘运动</li>
+<li>减速箱可拆卸，无减速箱时可用做发射的摩擦轮电机</li>
+<li>搭配 C620 电调（右侧），与电机之间由 7pin GH1.25 编码器线和三相线连接</li>
+</ol>
+<p>参数：</p>
+<ul>
+<li>减速比：约 3591/187（约 19/1）</li>
+<li>带减速箱力矩常数：0.3 Nm/A</li>
+</ul>
+<h3>M2006 &amp; C610</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/general/M2006">M2006 动力系统</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/817e2f9c6d4d.jpg" alt="img"></p>
+<p>小型电机，是M3508的轻量版。</p>
+<ol>
+<li>可作为供弹拨盘电机，或其他较小的地方</li>
+<li>搭配 C610 电调（右侧），4 pin GH1.25 编码器线和三相线</li>
+</ol>
+<p>参数：</p>
+<ul>
+<li>去减速箱，自带连轴齿轮：0.4模，9齿，变位+0.5左右</li>
+</ul>
+<h3>GM6020</h3>
+<p><img loading="lazy" decoding="async" src="../../assets/image/a3418b72c46f.png" alt="img"></p>
+<p>这是一款<strong>云台</strong>电机，常用于 pitch 轴和 yaw 轴上（即云台电机），也可用作舵轮的舵向电机。</p>
+<ol>
+<li>中空（空心轴），可放置直径 &lt;=18mm 的导电滑环</li>
+<li>反馈角度是绝对位置，不因断电改变零点位置</li>
+<li>内置电调，直接连接 CAN 总线</li>
+<li>可以使用电流或电压控制电机，电流控制需要使用上位机设置打开</li>
+</ol>
+<h3>3510</h3>
+<p>官网链接：</p>
+<ul>
+<li><p><a href="https://www.robomaster.com/zh-CN/products/components/detail/140">RoboMaster 3510减速电机</a></p>
+</li>
+<li><p><a href="https://www.robomaster.com/zh-CN/products/components/detail/136">RoboMaster 820R 电调</a></p>
+</li>
+</ul>
+<p><img loading="lazy" decoding="async" src="../../assets/image/681d8db662fc.jpg" alt="img"></p>
+<p>很古代的电机，大概是 M3508 的远古版本，搭配 820R 电调使用，都已绝版不再使用。</p>
+<h3>GM3510</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/detail/127">RoboMaster GM3510 直流无刷电机</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/f8f849f04223.jpg" alt="img"></p>
+<p>同样古代的电机，绝版不再使用。内置电调，接口是 XT30 和 can（类似 GM6020）。</p>
+<h2>遥控器</h2>
+<h3>DT7 &amp; DR16</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/detail/122">RoboMaster 遥控器套装</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/b581fde7d4cf.jpg" alt="img"></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/cd7a5b6cff63.jpg" alt="img"></p>
+<p>较古老但一直在使用的大疆官方遥控器，指定比赛用遥控器，要珍惜使用。可在大疆开发板上直接使用。</p>
+<p>DT7 是遥控器，DR16 是对应的接收器。DR16 使用 DBUS 协议（似乎就是 UART 电平反相）和主控板通信。</p>
+<p>长戳 DR16 正面右侧孔内，直到LED 绿色闪烁，接收器进入配对状态，可以重新绑定附近的 DT7 遥控器（匹配时靠近一点，远离其他开着的遥控器，否则很可能绑到其他遥控器上）。</p>
+<h2>大疆开发板</h2>
+<p>常用的板子有 A、C 两个型号。一般一辆车云台和底盘一共两块主控板，通常分别为 C 板和 A 板。</p>
+<h3>A 板</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/general/development-board?from=online-store">RoboMaster开发板套件</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/623a6ad5f621.jpg" alt="img"></p>
+<p>A 板常用于底盘，芯片型号是 STM32F407。A 板有陀螺仪，不过不怎么用。</p>
+<p>A 板的重要接口有</p>
+<ul>
+<li>CAN 1 * 4</li>
+<li>CAN 2 * 4</li>
+<li>UART * 3</li>
+<li>Micro B USB</li>
+<li>XT30 母 * 4（需要软件开启，默认没有电）</li>
+</ul>
+<p>A 板的接口大部分是卧式</p>
+<h3>C 板</h3>
+<p>官网链接：<a href="https://www.robomaster.com/zh-CN/products/components/general/development-board-type-c">RoboMaster 开发板 C 型</a></p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/880bf2adf75e.png" alt="img"></p>
+<p>C 板常用于云台，芯片型号是 STM32F427。他有 BMI088 陀螺仪和一个磁力计，所以常作为云台控制板。</p>
+<p>C 板的重要接口有</p>
+<ul>
+<li>CAN 1* 2</li>
+<li>CAN 2 * 2</li>
+<li>UART * 2</li>
+<li>Micro B USB</li>
+<li>XT30 母 * 3 （不需要开启直接可以用）</li>
+</ul>
+<p>注意 C 板的接口大部分是卧倒式</p>
+<h3>B 板</h3>
+<p>相当少见，还没用过（x）</p>
+<h2>裁判系统（TODO）</h2>
+<p>裁判系统是比赛时使用的系统，一般大疆比赛时会提供借用（如果买不起足够多套），模块之间使用 4pin 航空线通信和供电，和主控板使用 UART 串口通信。</p>
+<p>裁判系统的串口通信协议每年都会有一定变动，具体细节需要查看各赛季的比赛手册。</p>
+<h3><!--主控--></h3>
+<h3><!--图传--></h3>
+<h3><!--电源管理（电管）--></h3>
+<h3><!--弹丸充能--></h3>
+<h3><!--RFID 场地交互模块--></h3>
+<h3><!--UWB--></h3>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

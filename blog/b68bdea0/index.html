@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>模、余数、取整</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>模、余数、取整</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>模、余数、取整</h1>
+<h2>取整</h2>
+<p>取模包括很多种。</p>
+<ul>
+<li><p>floor 向下取整（数学符号：$\lfloor x \rfloor$）</p>
+<pre><code>floor(3.14) = 3
+floor(-3.14) = -4
+</code></pre>
+</li>
+<li><p>ceil 向上取整（数学符号：$\lceil x \rceil$）</p>
+<pre><code>ceil(3.14) = 4
+ceil(-3.14) = -3
+</code></pre>
+</li>
+<li><p>round 四舍五入（你会的）</p>
+</li>
+<li><p>trunc 截断取整：直接抛弃小数部分</p>
+<pre><code>trunc(3.14) = 3
+trunc(-3.14) = -3
+</code></pre>
+</li>
+</ul>
+<h2>模和余数</h2>
+<p>数论中，求余数（remainder）和取模运算（mod）是完全相同的：</p>
+$$ 
+\displaylines{
+remainder = a \mod b = a - b \lfloor \frac ab \rfloor
+} 
+$$
+
+
+<p>编程实现应当为：</p>
+<pre><code>a - b * floor(a / b)
+</code></pre>
+<p>但是在编程语言中的实现却不是这样。</p>
+<p>C 语言 math 库的 fmod 函数，实际相当于：</p>
+<pre><code>a - b * trunc(a / b)
+</code></pre>
+<p>另一个 remainder 函数，相当于：</p>
+<pre><code>a - b * round(a / b)
+</code></pre>
+<h2>其他（？）</h2>
+<h3>其他语言的取模</h3>
+<p>把任意角（范围无穷）限制在一个周期里（0 到 360），本质就是取模。</p>
+<p>但在 c 语言， -90 度得到了：</p>
+<pre><code>fmod(-90, 360) = -90
+</code></pre>
+<p>在 python 却得到了 270：</p>
+<pre><code>&gt;&gt; -90 % 360
+270
+</code></pre>
+<p>而 python 的 math 库实现的 fmod 和 C 语言结果相同：</p>
+<pre><code>&gt;&gt; import math
+&gt;&gt; math.fmod(-90, 360)
+-90
+</code></pre>
+<p>实际上，java、javascript 和 C 语言相同，而 python 默认取模、matlab 均是标准定义。</p>
+<p>（<del>我说 python 是对的</del>）</p>
+<h3>银行家舍入法</h3>
+<blockquote>
+<p><a href="https://handwiki.org/wiki/IEEE_754#Roundings_to_nearest">IEEE 754 - HandWiki - 定向四舍五入</a></p>
+</blockquote>
+<p>银行家舍入法，统计学和商业上用于减少误差，同样定义在 IEEE 754 中。</p>
+<p>在某个要舍入的位上（四舍六入五成双）：</p>
+<ol>
+<li>此位小于 5 舍去</li>
+<li>此位大于 5 进位</li>
+<li>若后面位中存在非零，进位</li>
+<li>等于 5 且后面位均为 0，则看前一位数字，奇数进位，偶数舍去</li>
+</ol>
+<h3>C 其他的取整函数</h3>
+<p>还有 nearbyint 和 rint，它们默认使用银行家舍入。（似乎也可在库中改为其他舍入方式）</p>
+<p>他们的区别仅在于，rint 在发现精度损失时会报错：</p>
+<blockquote>
+<p><a href="https://linux.die.net/man/3/rint">rint(3): round to nearest integer - Linux man page</a>:</p>
+<p>The <strong>rint</strong>() functions do the same, but will raise the <em>inexact</em> exception (<strong>FE_INEXACT</strong>, checkable via <strong><a href="https://linux.die.net/man/3/fetestexcept">fetestexcept</a></strong>(3)) when the result differs in value from the argument.</p>
+</blockquote>
+<h3>C 的 rint 和 round？</h3>
+<blockquote>
+<p><a href="https://linux.die.net/man/3/round">round(3) - Linux man page</a></p>
+</blockquote>
+<p>均是四舍五入。但是在 0.5、1.5 等半值时（）</p>
+<ul>
+<li><p>rint 取最近的偶数（银行家舍入）</p>
+<pre><code>rint(0.5) = 0
+rint(1.5) = 2
+</code></pre>
+</li>
+<li><p>round 取绝对值大的（远离零的）</p>
+<pre><code>round(0.5) = 1
+round(-0.5) = -1
+</code></pre>
+</li>
+</ul>
+<h3>IEEE 754</h3>
+<p>IEEE 标准系列远古力作，定义了浮点数实现标准（太长不看（x））</p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

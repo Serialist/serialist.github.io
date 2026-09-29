@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>c 与 cpp 混合编译</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>c 与 cpp 混合编译</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>c 与 cpp 混合编译</h1>
+<h2>为什么不能直接编译</h2>
+<p>必然不行，问题出现在编译的链接环节。</p>
+<ol>
+<li><p>cpp 中有 c 没有的语法，如类、模板等等</p>
+</li>
+<li><p>cpp 有<strong>名字粉碎</strong>（name mangling）机制，和 c 编译器生成符号不同，这会导致链接（link）过程中出现 <code>undefined symbol</code> 等错误</p>
+<ul>
+<li><p>如 <code>void foo(int);</code>，会被 cpp 编译成类似 <code>_Z4fooi</code> 的名字</p>
+</li>
+<li><p>而 c 语言编译 <code>void foo(int);</code> 后函数名还是 <code>foo</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2>怎么办</h2>
+<p>用 <code>.hpp</code> 文件定义 cpp 语言，而 <code>.h</code> 需要适配 c，这样可以分开表示</p>
+<p>在声明或 <code>.h</code> 中用 <code>extern &quot;C&quot;</code> 来转化所有需要通用的接口。</p>
+<p><code>extern &quot;C&quot;</code> 用法：</p>
+<ol>
+<li><p>注意这个 <code>&quot;C&quot;</code> 是大写的 C</p>
+</li>
+<li><p>单行语句写法：<code>extern &quot;C&quot; void foo(int a);</code></p>
+</li>
+<li><p>多行写法（一般写在 .h 中）：</p>
+<pre><code class="language-c">#ifdef __cplusplus
+extern &quot;C&quot;
+{
+#endif
+
+/* 你的头文件声明代码 */
+    
+#ifdef __cplusplus
+}
+#endif
+</code></pre>
+</li>
+</ol>
+<p>如果是你想让 C 语言的 .h 文件能在 C++ 中使用，你需要用在这个头文件中用 <code>extern &quot;C&quot;</code> 把整个代码都括起开，这样 <code>.cpp</code> 文件在 include 这个头文件时就可以把他识别成 C 代码。</p>
+<p>如果你想让 C++ 中的一部分代码能用在 C，在这部分代码前同样加 <code>extern &quot;C&quot;</code> 就可以了。但是你无法将 class 等强行变成 C 语言。</p>
+<pre><code class="language-cpp">extern &quot;C&quot; int Foo(void){
+    // 正常的 C++ 代码
+}
+</code></pre>
+<p>上面这个函数就可以被 C 语言用了（例如嵌入式用 freertos 时，你想用 C++ 写任务函数，这样就可以用了）</p>
+<p>另外，C++ 某个变量或函数要是兼容 C，也要把 <code>extern &quot;C&quot;</code> 写到他的函数实现，他的所有声明也要有，总之一处用处处用，他在所有定义都要用 <code>extern &quot;C&quot;</code></p>
+<blockquote>
+<p>  为什么我给C的头文件也要写 <code>extern&quot;C&quot;</code>？因为include不管你是什么文件，他的原理是复制，详见编译过程的宏处理阶段。</p>
+<p>  另外 <code>.h</code> 好多 C++ 也在用，所以你并不知道 <code>.h</code> 是谁的头文件。我还是倾向于把 C++ 的头文件写成 <code>.hpp</code>。</p>
+</blockquote>
+<h2>vscode</h2>
+<p>感觉C和C++在一起用时，会有很多奇怪的问题，例如静态语法检查会报错，大概是vsc抽风罢（？）</p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

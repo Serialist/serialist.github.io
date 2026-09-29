@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>归档</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>归档</h1>
+<div class="timeline-container"><h2 class="timeline-year">2026</h2><ul class="timeline-list"><li class="timeline-item">
+                    <span class="timeline-date">07-09</span>
+                    <a href="/blog/fbeca571/">c 与 cpp 混合编译</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">07-09</span>
+                    <a href="/blog/64c824f1/">编译器关键字</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">07-09</span>
+                    <a href="/blog/32200a32/">constexpr 和 inline</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">07-06</span>
+                    <a href="/blog/dbe1869a/">卡尔曼滤波</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">06-25</span>
+                    <a href="/blog/bc01e292/">无风无日夏至雨沥沥</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">05-10</span>
+                    <a href="/blog/b174dbaf/">STM32 芯片锁死的解决</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">04-30</span>
+                    <a href="/blog/688320fc/">使用 ffmpeg 简单压缩视频</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">04-12</span>
+                    <a href="/blog/d1b1051f/">奇淫巧技 in C</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">04-12</span>
+                    <a href="/blog/e23e7e4c/">Markdown、Tex和Mermaid</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">04-10</span>
+                    <a href="/blog/8f6419bb/">博客踩坑记录</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">03-13</span>
+                    <a href="/blog/3deea09a/">PID 控制器 - 1</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">02-06</span>
+                    <a href="/blog/b68bdea0/">模、余数、取整</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">01-21</span>
+                    <a href="/blog/bc94e4fe/">RM 开源资料汇总</a>
+                </li></ul><h2 class="timeline-year">2025</h2><ul class="timeline-list"><li class="timeline-item">
+                    <span class="timeline-date">11-25</span>
+                    <a href="/blog/eae5e989/">RM物资目录</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">11-25</span>
+                    <a href="/blog/0d311a96/">中国业余无线电发展史</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">10-18</span>
+                    <a href="/blog/1c36e554/">更新日志（Change Log）指南</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">10-06</span>
+                    <a href="/blog/aca28725/">大小端字节序</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">08-24</span>
+                    <a href="/blog/3b321076/">操作证和电台执照</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">08-16</span>
+                    <a href="/blog/b681fd0b/">版本号</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">07-21</span>
+                    <a href="/blog/df492585/">业余无线电入门指南</a>
+                </li><li class="timeline-item">
+                    <span class="timeline-date">01-21</span>
+                    <a href="/blog/dcd9c7c5/">CSS 入门</a>
+                </li></ul><h2 class="timeline-year">2024</h2><ul class="timeline-list"><li class="timeline-item">
+                    <span class="timeline-date">10-05</span>
+                    <a href="/blog/828c954d/">hello world</a>
+                </li></ul></div></div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>版本号</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>版本号</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>版本号</h1>
+<p>版本号一般形如：<code>v1.2.3.20260101_alpha</code>，它包括：</p>
+<ul>
+<li><p>前缀 vversion 版本的缩写。</p>
+</li>
+<li><p>主版本号（v<strong>2</strong>.1.3.20250412_alpha）</p>
+<p>当功能模块有较大的变动，比如增加模块或是整体架构发生变化。此版本号由项目经理决定是否修改。</p>
+</li>
+<li><p>副版本号（v2.<strong>1</strong>.3.20250412_alpha）</p>
+<p>当功能有一定的增加或变化，比如增加了对权限控制、增加自定义视图等功能。此版本号由项目经理决定是否修改。</p>
+</li>
+<li><p>修订版本号（v2.1.<strong>3</strong>.20250412_alpha）</p>
+<p>般是 bug 修复或是一些小的变动，要经常发布修订版，时间间隔不限，修复一个严重的 bug 即可发布一个修订版。此版本号由项目经理决定是否修改。</p>
+</li>
+<li><p>日期版本号（v2.1.3.<strong>20250412</strong>_alpha）</p>
+<p>用于记录修改项目的当前日期，每天对项目的修改都需要更改日期版本号。此版本号由开发人员决定是否修改。</p>
+</li>
+<li><p>希腊字母版本号（v2.1.3.20250412_<strong>alpha</strong>）</p>
+<p>希腊字母版本号包括很多，常见的有：base、alpha、beta 、RC 、 release。</p>
+<ul>
+<li><p>base</p>
+<p>基础框架版本。通常包括所有功能，但没有完整实现，只是做为整体的基础架构。</p>
+</li>
+<li><p>alpha</p>
+<p>内测版本，初级版本。此阶段以实现功能为主，通常只在开发者内部交流。该版本软件 bug 一般较多，是测试版。</p>
+<p>测试人员提交 bug 经开发人员修改，发布给测试人员，此时可标注 alpha 版。</p>
+</li>
+<li><p>beta</p>
+<p>公测版本。该版本消除了严重错误，但还需要多次测试来进一步消除。</p>
+<p>修改 bug 经测试人员确认发布到公网上，此时可标注 beta 版。</p>
+</li>
+<li><p>RC</p>
+<p>RC 是 release candidate 的缩写，是“发布候选版”。该版本已经相当成熟，基本不存在导致错误的 bug，与发行的正式版本相差无几。</p>
+</li>
+<li><p>release</p>
+<p>发行版，是“最终版本”。在一系列测试后，终归有一个正式版本，是最终交付用户的版本。有时也称标准版。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>原文链接：<a href="https://blog.csdn.net/qq_29974981/article/details/121008029">https://blog.csdn.net/qq_29974981/article/details/121008029</a></p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>奇淫巧技 in C</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>奇淫巧技 in C</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>奇淫巧技 in C</h1>
+<blockquote>
+<p>其实只是一些语法糖，并不是奇淫巧技。但不能因为重心放在研究语法技巧，而遗忘真正的事情。</p>
+</blockquote>
+<h2>C99 复合字面量</h2>
+<pre><code class="language-c">void foo(int data[4]);
+
+void bar(){
+    foo((int[4]){1000,
+                 2000,
+                 1000,
+                 0});
+}
+</code></pre>
+<ol>
+<li><p>复合，指可用于数组、结构体。结构体可以指定成员（参考下面）</p>
+</li>
+<li><p>C99 特性。不过现在环境都支持 C99 吧</p>
+</li>
+<li><p>本质是创建匿名变量，其实可以用类似<code>int *a=(int[4]{1, 2, 3, 4}</code>来当变量使，但是及其不建议，当临时变量用就行</p>
+</li>
+<li><p>下面这种写法是不行的：</p>
+<pre><code class="language-c">int a[4];
+a=(int[4]{1, 2, 3, 4};
+</code></pre>
+<p> 但结构体可以</p>
+<pre><code class="language-c">typedef struct {int a; int b} foo_t;
+foo_t foo;
+foo = {1, 2};
+</code></pre>
+<p> 但结构体可以变量互相赋值，但数组不行。</p>
+</li>
+<li><p>一般用于创建字面量</p>
+</li>
+</ol>
+<blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/385523590"> C语言复合字面量应该如何使用？ - 知乎</a></p>
+</blockquote>
+<h2>C99：指定初始化器（Designated Initializers）</h2>
+<pre><code class="language-c">struct foo{
+  int a;
+  float b;
+  char c;
+};
+
+void bar(){
+    struct foo x = {
+        .a = 114,
+        .b = 51.4f,
+        .c = &#39;f&#39;
+    };
+    
+    int y[4] = {
+        [0] = 0,
+        [1] = 7,
+        [2] = 2,
+        [3] = 1
+    }
+}
+</code></pre>
+<ol>
+<li>用 <code>.成员名</code> （结构体）或<code>[index]</code>（数组）指定赋值</li>
+<li>可不按顺序</li>
+<li>未赋值，自动赋值 0 / 空值</li>
+<li>仅能初始化，运行中不能这样</li>
+</ol>
+<h2>字符串字面量拼接</h2>
+<pre><code class="language-c">char *s = &quot;aaa&quot;&quot;bbb&quot;; // &quot;aaabbb&quot;
+
+// ======== usage ========
+#define VERSION &quot;v1.2.0&quot;
+#define DEVICE &quot;STM32H723&quot;
+
+foo(&quot;version: &quot; VERSION &quot;, device: &quot; DEVICE);
+// 相当于 foo(&quot;version: v1.2.0, device: STM32H723&quot;);
+</code></pre>
+<ol>
+<li>仅用于字面量字符串，也就是常量（const 不行）才可以，变量不行</li>
+<li>很老的特性，古代就可以用了，但是似乎平常用的很少</li>
+<li>C99 之前就可以用，但是 C99 才允许普通字符串 + 宽字符串（如 <code>&quot;abc&quot; L&quot;def&quot;</code>）</li>
+</ol>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

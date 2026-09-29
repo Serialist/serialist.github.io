@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>constexpr 和 inline</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>constexpr 和 inline</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>constexpr 和 inline</h1>
+<h2>inline</h2>
+<p>inline作用有二：</p>
+<ol>
+<li>链接可重复（首要）：允许函数定义多次，但会合并为一个，避免重定义</li>
+<li>内联展开提示（次要）：建议编译器内联展开，也就是直接把函数嵌入到调用处</li>
+</ol>
+<p>inline使用场景：</p>
+<ol>
+<li><p>可重复实现：实现在h，hpp的函数，如果类方法，或直接写进去的函数</p>
+<p>（实现在hpp的类里的函数，默认带inline）</p>
+<pre><code class="language-c++">/// @file foo.hpp
+#pragma once
+
+class Foo{
+    int x;
+    
+    // 这个构造函数默认inline
+    Foo(int x){
+        this-&gt;x = x;
+    }
+    
+    // 类里实现的函数，默认 inline，可省
+    inline int Bar(int y){
+        return x * y;
+    }
+}
+
+// 全局函数，默认没有 inline，不加 inline 会报错
+inline int Bar(int x, int y){
+    return x * y;
+}
+
+// 若是模板，编译器会自己 inline，可省
+template&lt;typename T&gt;
+T Qux(T a, T b){
+    return a * b;
+}
+</code></pre>
+</li>
+<li><p>内联函数用，但inline只是建议编译器，实际未必展开，如果开优化<code>-O</code>了不inline也可能展开（所以只是建议，选择权在编译器）</p>
+<pre><code class="language-c++">/// @file math-tool.hpp
+#pragma once
+
+namespace math_tool{
+    
+// 这里用了可能展开，不过实现在hpp里了也不得不inline了（作用1）
+inline float Sin(float x){
+    // 调用了某种数学硬件优化库
+    return arm_sin_f32(x);
+}
+    
+// inline 时，声明和实现应在同一头文件。若仅 .hpp 声明
+// 但实现放在 .cpp，不触发内联展开优化
+// 如下：
+inline float Cos(float x);
+}
+</code></pre>
+<p>如果展开，就不会跳到Sin再跳到arm_sin_f32，相当于直接把 arm_sin_f32 放在调用处。</p>
+<p>像这样调用函数时，栈的跳转可能比函数运算的开销还大（调用函数要压栈、换指针，也是需要时间的），尤其是这样频繁调用的函数，cpu在函数和现场跳来跳去，得不偿失，就需要优化了。</p>
+<p>内联展开，相当于 copy 了一份函数，放在调用处，内存可能变大了，这算是优化的空间换时间（？）</p>
+</li>
+</ol>
+<h2>constexpr</h2>
+<p>inline 强调函数的链接，和内联展开优化。而 constexpr 是用于编译器优化：这个变量/函数需要在编译器就算出来。</p>
+<pre><code class="language-c++">/// @file test.cpp
+// 以下都是全局作用域
+
+constexpr int Foo(int a){
+    return a * 10;
+}
+
+constexpr int a = Foo(4);
+
+// 也是对的，相当于 array[100]
+int array[Foo(10)];
+</code></pre>
+<p>const 和 constexpr 变量的区别：</p>
+<ul>
+<li><p><code>const</code> 强制初始化后不可变，但值可能运行时才确定</p>
+<p>只有全局值确定才放在数据区，不然大概进 RAM</p>
+</li>
+<li><p><code>constexpr</code> 强制编译期用常量初始化</p>
+<p>全局 / 静态：一定不占用 RAM</p>
+<p>局部：先优化为立即数、不占栈；复杂对象仍可能在栈</p>
+</li>
+</ul>
+<p>constexpr 函数自带 inline：</p>
+<ul>
+<li>编译期用：编译期算完，作为常量用</li>
+<li>运行时用：不是编译期能算的常量，退化为 inline 函数</li>
+</ul>
+<h2>两者关系</h2>
+<p>其实现在编译器会自动优化，比如 1 + 2 会自动编译期算出 3，而不是放到编译完的程序里，每次运行算一遍。</p>
+<p>这样说，inline 如果展开了，编译器再优化了，其实就是 constexpr。但优化不是 inline 做的，inline 更重要的任务是防止重定义。</p>
+<p>constexpr 让程序限制死了在编译器能用，指定了要优化这里，所以是编译器优化指令。</p>
+<p>inline就算展开优化为了常数，也不能在编译器用。</p>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>

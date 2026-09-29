@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="msvalidate.01" content="BBA9017AD102486221BB4EEC0F83F64C" />
+	<meta name="description" content="Serialist 的博客">
+	<link rel="icon" href="/assets/image/favicon.png">
+	<title>博客踩坑记录</title>
+
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://unpkg.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link rel="stylesheet" href="https://unpkg.com/mdui@2/mdui.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css"
+		id="markdown-style">
+	<script>
+		// 唯一保留的内联脚本：在首帧渲染前同步应用主题，避免暗色模式下页面跳转「白一下」（FOUC）
+		(function () {
+			var dark = false;
+			try { dark = localStorage.getItem('darkMode') === 'true'; } catch (e) {}
+			if (dark) {
+				document.documentElement.classList.add('dark-mode');
+				var s = document.getElementById('markdown-style');
+				if (s) s.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-dark.min.css';
+			}
+		})();
+	</script>
+	<link rel="stylesheet" href="/assets/style/global.css">
+	<link rel="stylesheet" href="/assets/style/timeline.css">
+</head>
+
+<body>
+	<div id="page-mask"></div>
+
+	<div id="side-drawer" class="side-drawer">
+		<div class="drawer-content">
+			<div class="drawer-header">菜单</div>
+			<div class="drawer-links">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener"> 开往 </a>
+			</div>
+		</div>
+		<div class="drawer-overlay" id="drawer-overlay"></div>
+	</div>
+
+	<nav>
+		<div class="nav-left">
+			<button class="menu-toggle mobile-only" id="menu-btn" aria-label="打开菜单">
+				<span> </span>
+				<span> </span>
+				<span> </span>
+			</button>
+			<a href="/" class="nav-logo" id="site-logo">Serialist</a>
+			<div class="nav-links desktop-only">
+				<a href="/about/">关于</a>
+				<a href="/blog/">博客</a>
+				<a href="/friend/">友链</a>
+			</div>
+		</div>
+		<div class="nav-right">
+			<div class="nav-links desktop-only">
+				<a href="https://www.travellings.cn/go.html" target="_blank" rel="noopener" class="nav-icon-link">
+					<mdui-icon name="train"></mdui-icon> 开往
+				</a>
+			</div>
+
+			<button id="theme-toggle" class="theme-switch-btn">
+				<span class="material-icons" id="theme-icon">light_mode</span>
+			</button>
+
+			<a href="https://github.com/serialist" target="_blank" class="github-link" rel="noopener">
+				<img src="/assets/image/github-mark.svg" class="github-mark" alt="GitHub" width="24" height="24">
+				<span class="desktop-only">GitHub</span>
+			</a>
+		</div>
+	</nav>
+	<div class="path-nav" id="path-nav"><a href="/">首页</a><span>/</span><a href="/blog/">博客</a><span>/</span><span>博客踩坑记录</span></div>
+	<div class="content-container">
+		<div id="main-content" class="markdown-body"><h1>博客踩坑记录</h1>
+<h2>Typora 相关配置</h2>
+<p>Markdown 编辑器有很多，如常常用于写笔记的 Obsidian。但最终我选用了鉴于 Typora，因为他更轻量一点。</p>
+<p>Markdown 相关内容请看本站文章 <a href="https://www.serialist.top/?p=blog%2Fe23e7e4c">Markdown、Tex和Mermaid</a>。</p>
+<p>在菜单的<code>文件 - 偏好设置</code>中进行设置。我开启的设置有</p>
+<ul>
+<li>数学公式渲染</li>
+<li>mermaid 渲染</li>
+<li>图像复制在<code>./asstes</code>文件夹</li>
+</ul>
+<p>此外，我倾向于开启用<code>Tab</code>做缩进符，建议开启。</p>
+<p>你还可以通过下面这个选项，在右键菜单添加<code>创建 md 文件</code>的快捷项：</p>
+<p><img loading="lazy" decoding="async" src="../../assets/image/a1abc2be5136.png" alt="image-20260410161201713"></p>
+<h3>自定义命令行导出文件</h3>
+<p>在<code>偏好设置 - 导出</code>中，你还可以自定义命令行命令，来自定义操作</p>
+<p>我在自己的博客仓库中编写了<code>manage.py</code>来处理文件，所以可以调用：</p>
+<pre><code>python &quot;path-to-my-site\manage.py&quot; add --config &quot;path-to-my-site\manage.yaml&quot; -i &quot;${currentPath}&quot;
+</code></pre>
+<p>这里的<code>${currentPath}</code>是一个占位符，表示当前单个文件的路径。</p>
+<p>注意这个占位符要用引号包括<code>&quot;${currentPath}&quot;</code>，或者如果文件路径带空格，命令行命令会有问题。</p>
+<h2>Marked.js + MathJax + Mermaid 前端渲染</h2>
+<p>我采用单页面网站，每次后端拉取 md 文件渲染。</p>
+<p>Markdown 渲染实在是最大的一个坑，尤其是和 MathJax 一起。</p>
+<h3>mathjax 渲染</h3>
+<ol>
+<li>不渲染</li>
+</ol>
+<ul>
+<li><p>先 marked 渲染导致公式内部有问题</p>
+<p>  解决方法：先把公式保护起来，渲染 md 后再放回去渲染 tex 公式</p>
+<pre><code class="language-javascript">const MathProtector = {
+    blockMath: [],
+    inlineMath: [],
+
+    protect(md) {
+        this.blockMath = [];
+        this.inlineMath = [];
+
+        return md.replace(/(```[\s\S]*?```|`[^`\n]+`)|(\$\$[\s\S]+?\$\$)|(\$[^$\n]+\$)/g, (match, code, block, inline) =&gt; {
+            // 如果代码块，不动，防止代码块被误处理
+            if (code) return code;
+
+            // 如果行间公式
+            if (block) {
+                const formula = block.slice(2, -2);
+                const index = this.blockMath.length;
+                this.blockMath.push(`$$ \n\\displaylines{${formula}} \n$$`);
+                return `\n\n&lt;div id=&quot;BLOCK_MATH_${index}&quot;&gt;&lt;/div&gt;\n\n`;
+            }
+
+            // 如果行内公式
+            if (inline) {
+                const formula = inline.slice(1, -1);
+                // 如果只有一个$就跳过
+                if (formula.trim().length === 0) return inline;
+                const index = this.inlineMath.length;
+                this.inlineMath.push(`$${formula}$`);
+                return `INLINE_MATH_${index}`;
+            }
+
+            return match;
+        });
+    },
+
+    restore(html) {
+        // 还原行内
+        this.inlineMath.forEach((math, i) =&gt; {
+            html = html.replace(`INLINE_MATH_${i}`, math);
+        });
+        return html;
+    },
+
+    restoreBlocks(container) {
+        // 还原块级
+        this.blockMath.forEach((math, i) =&gt; {
+            const el = container.querySelector(`#BLOCK_MATH_${i}`);
+            if (el) el.outerHTML = math;
+        });
+    }
+};
+</code></pre>
+</li>
+</ul>
+<ol start="2">
+<li><p>不换行，行间公式用<code>\\</code>来换行有问题</p>
+<p> 可能是某些奇妙问题，我具体也不知道为什么。</p>
+<p> 解决方案：给行间公式整体加上<code>\displaylines{  &lt;content&gt;  }</code>（在上面的代码里）</p>
+<blockquote>
+<p>感谢大佬踩坑，这篇博客还有许多其他 MathJax 的坑：<a href="https://adaning.github.io/posts/33457.html#toc-heading-4">MathJax常见问题 | DaNing的博客</a></p>
+</blockquote>
+</li>
+<li><p>某些功能用不了</p>
+<p> AI 说不能换行、<code>\mathbf{}</code>不能用，也可能是需要加 packages 中的配置。</p>
+<p> 但是实测好像没什么影响，在这里给一个配置仅供参考：</p>
+<pre><code class="language-javascript">window.MathJax = {
+            tex: {
+                inlineMath: [[&#39;$&#39;, &#39;$&#39;], [&#39;\\(&#39;, &#39;\\)&#39;]],
+                displayMath: [[&#39;$$&#39;, &#39;$$&#39;], [&#39;\\[&#39;, &#39;\\]&#39;]],
+                processEscapes: true,
+                packages: { &#39;[+]&#39;: [&#39;boldsymbol&#39;, &#39;ams&#39;] }
+            },
+            options: {
+                skipHtmlTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;, &#39;code&#39;],
+                ignoreHtmlClass: &#39;tex2jax_ignore&#39;
+            }
+        };
+</code></pre>
+</li>
+</ol>
+<h3>Mermaid 渲染</h3>
+<p>marked.js 渲染代码块时，渲染成如<code>&lt;code class=&quot;language-js&quot;&gt;  console.log(&quot;0721&quot;)  &lt;/code&gt;</code>的形式。如果是mermaid，他就属于类<code>language-mermaid</code>。</p>
+<p>但是 mermaid 库默认识别的类名是<code>.mermaid</code>，需要自己取<code>.language-mermaid</code>扔给渲染库。</p>
+<pre><code class="language-javascript">if (window.mermaid) {
+    await mermaid.run({
+    nodes: mainContent.querySelectorAll(&#39;.language-mermaid&#39;)
+    }).catch(err =&gt; console.error(&#39;Mermaid Error:&#39;, err));
+}
+</code></pre>
+</div>
+	</div>
+
+	<img src="/assets/image/sirinkawaii.gif" class="sirinkawaii" id="sirinkawaii" alt="">
+
+	<footer>
+		<div class="footer-content">
+			<p>Copyright &copy; 2026 Serialist · All Rights Reserved</p>
+			<p><a href="https://icp.gov.moe/?keyword=20261207" target="_blank" rel="noopener">萌ICP备20261207号</a></p>
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+	<script src="/assets/script/config.js"></script>
+	
+	<script src="/assets/script/site.js" defer></script>
+</body>
+
+</html>
